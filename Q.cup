@@ -53,14 +53,14 @@ global_decl_list block {: System.out.println("Parsing Complete"); :}
 | block {: System.out.println("Parsing Complete"); :}
 ;
 
-global_decl_list ::= 
+global_decl_list ::= *******
 global_decl_list global_decl 
 | global_decl;
 
 global_decl ::= 
-datatype_decl
-| var_decl
-| function_decl
+datatype_decl:datadecl 		{: RESULT = datadecl;:}
+| var_decl:vardecl			{: RESULT = vardecl;:}
+| function_decl	:funcdecl		{: RESULT = funcdecl;:}
 ;
 
 function_decl ::= 
@@ -85,7 +85,7 @@ TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: RESULT = new DatatypeNode(
 ;
 
 function_type ::=
-VOID 		{: RESULT = new VoidNode();:}
+VOID 		{: RESULT = new TypeNode("void");:}
 | type:t 	{: RESULT = new TypeNode(t);:}
 ;
 
