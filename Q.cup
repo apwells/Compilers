@@ -61,9 +61,26 @@ global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);Syst
 | block {: new ProgramNode(blk,null);System.out.println("Parsing Complete"); :}
 ;
 
-global_decl_list ::= *******
-global_decl_list global_decl 
-| global_decl;
+global_decl_list ::= 
+global_decl_list:declist global_decl:v 
+{: if (declist != null) {
+                       declist.declarations.add(v);
+                       RESULT = new DeclListNode(decl.declarations);
+                       
+                   } else {
+                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       res.add(v);
+                       RESULT = new DeclListNode(res);
+                   }
+                :}
+
+| global_decl:v
+{
+                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       res.add(v);
+                       RESULT = new DeclListNode(res);
+                   }
+;
 
 global_decl ::= 
 datatype_decl:datadecl 		{: RESULT = datadecl;:}
@@ -112,28 +129,36 @@ LEFTBRACE local_decl_list:decllist statement_list:stlist RIGHTBRACE {: RESULT = 
 ;
 
 // Local x only allows variable declarations
-local_decl_list ::= ******
-local_decl_list var_decl
-| var_decl
+local_decl_list ::= 
+local_decl_list:declist var_decl:v
+{: if (declist != null) {
+                       declist.declarations.add(v);
+                       RESULT = new DeclListNode(decl.declarations);
+                       
+                   } else {
+                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       res.add(v);
+                       RESULT = new DeclListNode(res);
+                   }
+                :}
+| var_decl:v
+{
+                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       res.add(v);
+                       RESULT = new DeclListNode(res);
+                   }
 ;
 
-statement_list ::= *******
+statement_list ::=
 statement:s statement_list:stlist
-{: if (l != null) {
-                       l.statements.add(s);
-                       RESULT = new StmtListNode(l.statements);
-                       // this use of side effects and aliasing is
-                       // a wee bit dirty
+{: if (stlist != null) {
+                       stlist.statements.add(s);
+                       RESULT = new StatementListNode(stlist.statements);
+                      
                    } else {
-		       // somewhat crude recovery
-               /* Note that this approach to recovery will yield
-                * an AST which is != null also if the input does
-                * not conform to the grammar! This is not necessarily
-                * what you want your parser to do.
-                */
                        List<StmtNode> res = new ArrayList<StmtNode>();
                        res.add(s);
-                       RESULT = new StmtListNode(res);
+                       RESULT = new StatementListNode(res);
                    }
                 :}
 |{:RESULT = null;:};
