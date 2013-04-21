@@ -1,5 +1,5 @@
 package ast;
 
-public abstract class DeclNode {
+public abstract class DeclNode extends Node{
 
 }
