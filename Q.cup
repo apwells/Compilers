@@ -1,0 +1,224 @@
+import java_cup.runtime.*;
+
+terminal SEMICOLON, COMMA, DOT, COLON;
+terminal LEFTBRACE, RIGHTBRACE;
+terminal LEFTBRACKET, RIGHTBRACKET;
+terminal LEFTTBRACKET, RIGHTTBRACKET;
+terminal LEFTPAREN, RIGHTPAREN;
+
+terminal BOOL, INT, FLOAT, STRING, LIST, CHAR, TUPLE, VOID;
+terminal ID, BOOLLITERAL, INTLITERAL, FLOATLITERAL, STRINGLITERAL, CHARLITERAL;
+
+terminal FDEF, TDEF;
+
+terminal ASSIGN;
+terminal NOT, OR, AND;
+terminal PLUS, MINUS, MULTIPLY, DIVIDE, POWER;
+terminal IN, LENGTH, CONCAT;
+terminal LESSTHAN, LESSTHANEQUAL, GREATERTHAN, GREATERTHANEQUAL, EQUAL, NOTEQUAL;
+
+terminal IF, ELSE, REPEAT, UNTIL, RETURN, DO, WHILE;
+
+non terminal type;
+non terminal expression, term, factor, exponent, final, accessor;
+non terminal sequence, list, tuple;
+non terminal expression_clist, expression_clist2;
+non terminal var_decl, var_type, var_init;
+
+non terminal function_type, function_decl;
+non terminal parameter_clist, parameter_clist2;
+
+non terminal global_decl_list, global_decl, local_decl_list;
+non terminal datatype_decl;
+
+non terminal block, statement_list, statement;
+non terminal ifelse, repeatuntil, while, assignment, function_call, return;
+non terminal program;
+
+precedence right POWER;
+precedence left DIVIDE, MULTIPLY;
+precedence left PLUS, MINUS;
+
+precedence nonassoc NOT;
+precedence left OR, AND;
+precedence right IN;
+precedence nonassoc LESSTHAN, LESSTHANEQUAL, GREATERTHAN, GREATERTHANEQUAL, EQUAL, NOTEQUAL;
+
+start with program;
+
+type ::= BOOL | INT | FLOAT | STRING | CHAR | LIST | TUPLE | ID;
+
+program ::= 
+global_decl_list block {: System.out.println("Parsing Complete"); :}
+| block {: System.out.println("Parsing Complete"); :}
+;
+
+global_decl_list ::= 
+global_decl_list global_decl 
+| global_decl;
+
+global_decl ::= 
+datatype_decl
+| var_decl
+| function_decl
+;
+
+function_decl ::= 
+FDEF ID LEFTPARENs parameter_clist RIGHTPAREN COLON function_type block;
+
+var_type ::= 
+ID COLON type
+; 
+
+var_decl ::= 
+var_type var_init SEMICOLON;
+
+var_init ::=
+ASSIGN expression_clist
+|
+;
+
+datatype_decl ::=
+TDEF ID COLON parameter_clist SEMICOLON
+;
+
+function_type ::= 
+VOID 
+| type;
+
+//two-productions are needed to avoid ambiguity
+parameter_clist ::= 
+var_type parameter_clist2
+|;
+
+parameter_clist2 ::= 
+COMMA var_type parameter_clist2
+|;
+
+block ::= 
+LEFTBRACE local_decl_list statement_list RIGHTBRACE
+| LEFTBRACE statement_list RIGHTBRACE
+;
+
+// Local x only allows variable declarations
+local_decl_list ::= 
+local_decl_list var_decl
+| var_decl
+;
+
+statement_list ::= 
+statement statement_list
+|;
+
+statement ::= 
+assignment
+| function_call
+| ifelse
+| while
+| repeatuntil
+| return
+;
+
+ifelse ::= 
+IF LEFTPAREN expression RIGHTPAREN LEFTBRACE statement_list RIGHTBRACE ELSE LEFTBRACE statement_list RIGHTBRACE
+;
+
+while ::=
+WHILE LEFTPAREN expression RIGHTPAREN DO LEFTBRACE statement_list RIGHTBRACE
+;
+
+repeatuntil ::= 
+REPEAT LEFTBRACE statement_list RIGHTBRACE UNTIL LEFTPAREN expression RIGHTPAREN SEMICOLON
+;
+
+function_call ::=
+ID LEFTPAREN expression_clist RIGHTPAREN
+;
+
+return ::= 
+RETURN expression SEMICOLON
+| RETURN SEMICOLON
+;
+
+assignment ::= 
+accessor ASSIGN expression SEMICOLON
+;
+
+sequence ::=
+STRINGLITERAL
+| tuple
+| list
+;
+
+accessor ::= 
+ID
+| accessor DOT ID
+;
+
+tuple ::=
+LEFTTBRACKET expression_clist RIGHTTBRACKET
+;
+
+list ::= 
+LEFTBRACKET expression_clist RIGHTBRACKET
+;
+
+expression_clist ::= 
+expression expression_clist2
+| expression_clist2
+;
+
+expression_clist2 ::= 
+COMMA expression expression_clist2
+|
+;
+
+expression ::=
+term
+| NOT expression
+| expression PLUS term
+| expression MINUS term
+| expression OR term
+| expression IN term
+| expression LESSTHAN term
+| expression LESSTHANEQUAL term
+| expression GREATERTHAN term
+| expression GREATERTHANEQUAL term
+| expression EQUAL term
+| expression NOTEQUAL term
+| expression CONCAT term
+| expression LEFTBRACKET expression COLON expression RIGHTBRACKET
+| expression LEFTBRACKET exfpression COLON RIGHTBRACKET
+| expression LEFTBRACKET COLON expression RIGHTBRACKET
+| expression LEFTBRACKET expression RIGHTBRACKET
+;
+
+term ::=
+factor
+| term MULTIPLY factor
+| term DIVIDE factor
+| term POWER factor
+| term AND factor
+;
+
+factor ::=
+exponent POWER factor
+| exponent
+;
+
+exponent ::=
+MINUS exponent 
+| final
+;
+
+final ::=
+accessor
+| LEFTPAREN expression RIGHTPAREN
+| INTLITERAL
+| FLOATLITERAL
+| BOOLLITERAL
+| CHARLITERAL
+| function_call
+| LENGTH LEFTPAREN expression RIGHTPAREN
+| sequence // This includes STRINGLITERAL
+;
