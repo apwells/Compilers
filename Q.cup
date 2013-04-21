@@ -124,46 +124,46 @@ IF LEFTPAREN expression RIGHTPAREN LEFTBRACE statement_list RIGHTBRACE ELSE LEFT
 ;
 
 while ::=
-WHILE LEFTPAREN expression RIGHTPAREN DO LEFTBRACE statement_list RIGHTBRACE
+WHILE LEFTPAREN expression RIGHTPAREN DO LEFTBRACE statement_list RIGHTBRACE	{: RESULT = new RptUntilNode(e,stlist);:}
 ;
 
 repeatuntil ::= 
-REPEAT LEFTBRACE statement_list RIGHTBRACE UNTIL LEFTPAREN expression RIGHTPAREN SEMICOLON
+REPEAT LEFTBRACE statement_list:stlist RIGHTBRACE UNTIL LEFTPAREN expression:e RIGHTPAREN SEMICOLON		{: RESULT = new RptUntilNode(e,stlist);:}
 ;
 
 function_call ::=
-ID LEFTPAREN expression_clist RIGHTPAREN
+ID:id LEFTPAREN expression_clist:elist RIGHTPAREN	{: RESULT = new FuncCallStmtNode(elist,id);:}
 ;
 
 return ::= 
-RETURN expression SEMICOLON
-| RETURN SEMICOLON
+RETURN expression:e SEMICOLON 	{: RESULT = new ReturnStmtNode(e);:}
+| RETURN SEMICOLON		{: RESULT = new ReturnStmtNode(null);:}
 ;
 
 assignment ::= 
-accessor ASSIGN expression SEMICOLON
+accessor:acc ASSIGN expression:e SEMICOLON	{: RESULT = new AssignNode(e,acc);:}
 ;
 
 sequence ::=
-STRINGLITERAL
-| tuple
-| list
+STRINGLITERAL:s		{: RESULT = new StringLitNode(s);:}
+| tuple	:tup		{: RESULT = tup;:}
+| list:list		{: RESULT = lis;:}
 ;
 
-accessor ::= 
+accessor ::= **************
 ID
 | accessor DOT ID
 ;
 
 tuple ::=
-LEFTTBRACKET expression_clist RIGHTTBRACKET
+LEFTTBRACKET expression_clist:elist RIGHTTBRACKET		{: RESULT = new TupleNode(elist); :}
 ;
 
 list ::= 
-LEFTBRACKET expression_clist RIGHTBRACKET
+LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist); :}
 ;
 
-expression_clist ::= 
+expression_clist ::=  *************
 expression expression_clist2
 | expression_clist2
 ;
@@ -174,27 +174,27 @@ COMMA expression expression_clist2
 ;
 
 expression ::=
-term				{: RESULT = term; :}
-| NOT expression		{: RESULT = new NotExprNode(expr); :}
-| expression PLUS term		{: RESULT = new PlusNode(expr,trm); :}
-| expression MINUS term	{: RESULT = new MinusNode(expr,trm); :}
-| expression OR term		{: RESULT = new OrNode(expr,trm); :}
-| expression IN term		{: RESULT = new InNode(expr,trm); :}
-| expression LESSTHAN term	{: RESULT = new LessThNode(expr,trm); :}
-| expression LESSTHANEQUAL term	{: RESULT = new LessThEqNode(expr,trm); :}
-| expression GREATERTHAN term		{: RESULT = new GreatThNode(expr,trm); :}
-| expression GREATERTHANEQUAL term	{: RESULT = new GreatThEqNode(expr,trm); :}
-| expression EQUAL term		{: RESULT = new EqNode(expr,trm); :}
-| expression NOTEQUAL term		{: RESULT = new NotEqNode(expr,trm); :}
-| expression CONCAT term		{: RESULT = new ConcatNode(expr,trm); :}
-| expression LEFTBRACKET expression COLON expression RIGHTBRACKET
-| expression LEFTBRACKET exfpression COLON RIGHTBRACKET
-| expression LEFTBRACKET COLON expression RIGHTBRACKET
-| expression LEFTBRACKET expression RIGHTBRACKET
+term:t				{: RESULT = t; :}
+| NOT expression:e		{: RESULT = new NotExprNode(e); :}
+| expression:e PLUS term:t		{: RESULT = new PlusNode(e,t); :}
+| expression:e MINUS term:t	{: RESULT = new MinusNode(e,t); :}
+| expression:e OR term:t	{: RESULT = new OrNode(e,t); :}
+| expression:e IN term:t	{: RESULT = new InNode(e,t); :}
+| expression:e LESSTHAN term:t		{: RESULT = new LessThNode(e,t); :}
+| expression:e LESSTHANEQUAL term:t	{: RESULT = new LessThEqNode(e,t); :}
+| expression:e GREATERTHAN term:t		{: RESULT = new GreatThNode(e,t); :}
+| expression:e GREATERTHANEQUAL term:t	{: RESULT = new GreatThEqNode(e,t); :}
+| expression:e EQUAL term:t		{: RESULT = new EqNode(e,t); :}
+| expression:e NOTEQUAL term:t		{: RESULT = new NotEqNode(e,t); :}
+| expression:e CONCAT term:t		{: RESULT = new ConcatNode(e,t); :}
+| expression:e1 LEFTBRACKET expression:e2 COLON expression:e3 RIGHTBRACKET	{: RESULT = new ThreeExprNode(e1,e2,e3); :}
+| expression:e1 LEFTBRACKET expression:e2 COLON RIGHTBRACKET		{: RESULT = new EndColNode(e1,e2); :}
+| expression:e1 LEFTBRACKET COLON expression:e2 RIGHTBRACKET		{: RESULT = new BegColNode(e1,e2); :}
+| expression:e1 LEFTBRACKET expression:e2 RIGHTBRACKET		{: RESULT = new NoColNode(e1,e2); :}
 ;
 
 term ::=
-factor:fac		{: RESULT = fax; :}
+factor:fac		{: RESULT = fac; :}
 | term:trm MULTIPLY factor:fac		{: RESULT = new MultiplyNode(trm,fac); :}
 | term:trm DIVIDE factor:fac		{: RESULT = new DivideNode(trm,fac); :}	
 | term:trm POWER factor:fac		{: RESULT = new PowerTermNode(trm,fac); :}
