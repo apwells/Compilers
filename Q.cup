@@ -118,8 +118,25 @@ local_decl_list var_decl
 ;
 
 statement_list ::= *******
-statement statement_list
-|;
+statement:s statement_list:stlist
+{: if (l != null) {
+                       l.statements.add(s);
+                       RESULT = new StmtListNode(l.statements);
+                       // this use of side effects and aliasing is
+                       // a wee bit dirty
+                   } else {
+		       // somewhat crude recovery
+               /* Note that this approach to recovery will yield
+                * an AST which is != null also if the input does
+                * not conform to the grammar! This is not necessarily
+                * what you want your parser to do.
+                */
+                       List<StmtNode> res = new ArrayList<StmtNode>();
+                       res.add(s);
+                       RESULT = new StmtListNode(res);
+                   }
+                :}
+|{:RESULT = null;:};
 
 statement ::= 
 assignment:ass		{: RESULT = ass;:}
@@ -161,9 +178,19 @@ STRINGLITERAL:s		{: RESULT = new StringLitNode(s);:}
 | list:list		{: RESULT = lis;:}
 ;
 
-accessor ::= **************
-ID
-| accessor DOT ID
+accessor ::=
+ID:d {: List<String> res = new ArrayList<String>();
+                   res.add(d);
+                   RESULT = new AccessorNode(res); :}
+| accessor:acc DOT ID:id {:if(acc !=null) {
+		acc.ids.add(id);
+		RESULT = new AccessortNode(acc.ids);
+		}
+		else
+		{List<ExprNode> res = new ArrayList<ExprNode>();
+                   res.add(e);
+                   RESULT = new AccessorNode(res);}
+:}
 ;
 
 tuple ::=
@@ -174,14 +201,23 @@ list ::=
 LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist); :}
 ;
 
-expression_clist ::=  *************
-expression expression_clist2
-| expression_clist2
+expression_clist ::= 
+expression:e expression_clist2:elist
+{:if(elist !=null) {
+		elist.expressions.add(e);
+		RESULT = new ExprListNode(elist.expressions);
+		}
+		else
+		{List<ExprNode> res = new ArrayList<ExprNode>();
+                   res.add(e);
+                   RESULT = new ExprListNode(res);} :}
+| expression_clist2:elist2 {: RESULT = elist2;:}
 ;
 
 expression_clist2 ::= 
-COMMA expression expression_clist2
-|
+COMMA expression:e expression_clist2:elist
+{:elist.expressions.add(e); RESULT = new ExprListNode(elist.expressions);:}
+| {: RESULT = null;:}	
 ;
 
 expression ::=
@@ -229,7 +265,7 @@ accessor:acc	{: RESULT = acc; :}
 | FLOATLITERAL:val	{: RESULT = new FloatNode(val); :}
 | BOOLLITERAL:val	{: RESULT = new BoolNode(val); :}
 | CHARLITERAL:val	{: RESULT = new CharNode(val); :}
-| function_call:func	{: RESULT = func;:}
+| function_call:func	{: RESULT = func;:}****************
 | LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e); :}
 | sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
 ;
