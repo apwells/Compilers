@@ -46,11 +46,19 @@ precedence nonassoc LESSTHAN, LESSTHANEQUAL, GREATERTHAN, GREATERTHANEQUAL, EQUA
 
 start with program;
 
-type ::= BOOL | INT | FLOAT | STRING | CHAR | LIST | TUPLE | ID;
+type ::= BOOL {: RESULT = new TypeNode("bool");:}
+	| INT {: RESULT = new TypeNode("int");:}
+	| FLOAT {: RESULT = new TypeNode("float");:}
+	| STRING {: RESULT = new TypeNode("string");:}
+	| CHAR {: RESULT = new TypeNode("char");:}
+	| LIST {: RESULT = new TypeNode("list");:}
+	| TUPLE {: RESULT = new TypeNode("tuple");:}
+	| ID {: RESULT = new TypeNode("id");:}
+;
 
 program ::= 
-global_decl_list block {: System.out.println("Parsing Complete"); :}
-| block {: System.out.println("Parsing Complete"); :}
+global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);System.out.println("Parsing Complete"); :}
+| block {: new ProgramNode(blk,null);System.out.println("Parsing Complete"); :}
 ;
 
 global_decl_list ::= *******
