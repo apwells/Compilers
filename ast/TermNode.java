@@ -1,5 +1,5 @@
 package ast;
 
-public class TermNode extends ExprNode{
+public abstract class TermNode extends ExprNode{
 
 }
