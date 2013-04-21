@@ -120,11 +120,11 @@ assignment
 ;
 
 ifelse ::= 
-IF LEFTPAREN expression RIGHTPAREN LEFTBRACE statement_list RIGHTBRACE ELSE LEFTBRACE statement_list RIGHTBRACE
+IF LEFTPAREN expression:e RIGHTPAREN LEFTBRACE statement_list:stlist RIGHTBRACE ELSE LEFTBRACE statement_list:stlist RIGHTBRACE
 ;
 
 while ::=
-WHILE LEFTPAREN expression RIGHTPAREN DO LEFTBRACE statement_list RIGHTBRACE	{: RESULT = new RptUntilNode(e,stlist);:}
+WHILE LEFTPAREN expression:e RIGHTPAREN DO LEFTBRACE statement_list:stlist RIGHTBRACE	{: RESULT = new WhileStmtNode(e,stlist);:}
 ;
 
 repeatuntil ::= 
