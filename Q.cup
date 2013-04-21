@@ -115,13 +115,33 @@ VOID 		{: RESULT = new TypeNode("void");:}
 ;
 
 //two-productions are needed to avoid ambiguity
-parameter_clist ::= ********
-var_type parameter_clist2
-|;
+parameter_clist ::=
+var_type:v parameter_clist2:parlist
+{: if (parlist != null) {
+                       parlist.params.add(v);
+                       RESULT = new ParamListNode(parlist.params);
+                       
+                   } else {
+                       List<VarTypeNode> res = new ArrayList<VarTypeNode>();
+                       parlist.params.add(v);
+                       RESULT = new ParamListNode(res);
+                   }
+                :}
+| {: RESULT= null:};
 
 parameter_clist2 ::= 
-COMMA var_type parameter_clist2
-|;
+COMMA var_type:v parameter_clist2:parlist
+{: if (parlist != null) {
+                       parlist.params.add(v);
+                       RESULT = new ParamListNode(parlist.params);
+                       
+                   } else {
+                       List<VarTypeNode> res = new ArrayList<VarTypeNode>();
+                       parlist.params.add(v);
+                       RESULT = new ParamListNode(res);
+                   }
+                :}
+| {: RESULT = null :};
 
 block ::= 
 LEFTBRACE local_decl_list:decllist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);:}
@@ -285,12 +305,12 @@ MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
 
 final ::=
 accessor:acc	{: RESULT = acc; :}
-| LEFTPAREN expression:e RIGHTPAREN  {: RESULT =new BrackExprNode(e); :}
+| LEFTPAREN expression:e RIGHTPAREN  {: RESULT = e; :}
 | INTLITERAL:val	{: RESULT = new IntNode(val); :}
 | FLOATLITERAL:val	{: RESULT = new FloatNode(val); :}
 | BOOLLITERAL:val	{: RESULT = new BoolNode(val); :}
 | CHARLITERAL:val	{: RESULT = new CharNode(val); :}
-| function_call:func	{: RESULT = func;:}****************
+| function_call:func	{: RESULT = func;:}
 | LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e); :}
 | sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
 ;
