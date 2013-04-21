@@ -64,30 +64,33 @@ datatype_decl
 ;
 
 function_decl ::= 
-FDEF ID LEFTPARENs parameter_clist RIGHTPAREN COLON function_type block;
+FDEF ID:id LEFTPARENs parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclkNode(paramlist,id,ftype);:}
+;
 
 var_type ::= 
-ID COLON type
+ID:id COLON type:tp 	{: RESULT = new VarTypeNode(tp,id);:}
 ; 
 
 var_decl ::= 
-var_type var_init SEMICOLON;
+var_type:vtype var_init:vinit SEMICOLON {: RESULT = new VarDeclNode(vinit,vtype);:}
+;
 
 var_init ::=
-ASSIGN expression_clist
+ASSIGN expression_clist:elist	{: RESULT = elist;:}
 |
 ;
 
 datatype_decl ::=
-TDEF ID COLON parameter_clist SEMICOLON
+TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: RESULT = new DatatypeNode(parlist,id);:}
 ;
 
-function_type ::= 
-VOID 
-| type;
+function_type ::=
+VOID 		{: RESULT = new VoidNode();:}
+| type:t 	{: RESULT = new TypeNode(t);:}
+;
 
 //two-productions are needed to avoid ambiguity
-parameter_clist ::= 
+parameter_clist ::= ********
 var_type parameter_clist2
 |;
 
@@ -96,31 +99,31 @@ COMMA var_type parameter_clist2
 |;
 
 block ::= 
-LEFTBRACE local_decl_list statement_list RIGHTBRACE
-| LEFTBRACE statement_list RIGHTBRACE
+LEFTBRACE local_decl_list:decllist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);:}
+| LEFTBRACE statement_list RIGHTBRACE					{: RESULT = new BlockNode(stlist,null);:}
 ;
 
 // Local x only allows variable declarations
-local_decl_list ::= 
+local_decl_list ::= ******
 local_decl_list var_decl
 | var_decl
 ;
 
-statement_list ::= 
+statement_list ::= *******
 statement statement_list
 |;
 
 statement ::= 
-assignment
-| function_call
-| ifelse
-| while
-| repeatuntil
-| return
+assignment:ass		{: RESULT = ass;:}
+| function_call:func	{: RESULT = func;:}	
+| ifelse:ifel		{: RESULT = ifel;:}
+| while:who		{: RESULT = whi;:}
+| repeatuntil:rptuntil	{: RESULT = rptuntil;:}
+| return:ret		{: RESULT = ret;:}
 ;
 
 ifelse ::= 
-IF LEFTPAREN expression:e RIGHTPAREN LEFTBRACE statement_list:stlist RIGHTBRACE ELSE LEFTBRACE statement_list:stlist RIGHTBRACE
+IF LEFTPAREN expression:e RIGHTPAREN LEFTBRACE statement_list:stlist1 RIGHTBRACE ELSE LEFTBRACE statement_list:stlist2 RIGHTBRACE	{: RESULT = new IfElseNode(e,stlist1,stlist2);:}
 ;
 
 while ::=
