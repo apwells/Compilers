@@ -174,19 +174,19 @@ COMMA expression expression_clist2
 ;
 
 expression ::=
-term
-| NOT expression
-| expression PLUS term
-| expression MINUS term
-| expression OR term
-| expression IN term
-| expression LESSTHAN term
-| expression LESSTHANEQUAL term
-| expression GREATERTHAN term
-| expression GREATERTHANEQUAL term
-| expression EQUAL term
-| expression NOTEQUAL term
-| expression CONCAT term
+term				{: RESULT = term; :}
+| NOT expression		{: RESULT = new NotExprNode(expr); :}
+| expression PLUS term		{: RESULT = new PlusNode(expr,trm); :}
+| expression MINUS term	{: RESULT = new MinusNode(expr,trm); :}
+| expression OR term		{: RESULT = new OrNode(expr,trm); :}
+| expression IN term		{: RESULT = new InNode(expr,trm); :}
+| expression LESSTHAN term	{: RESULT = new LessThNode(expr,trm); :}
+| expression LESSTHANEQUAL term	{: RESULT = new LessThEqNode(expr,trm); :}
+| expression GREATERTHAN term		{: RESULT = new GreatThNode(expr,trm); :}
+| expression GREATERTHANEQUAL term	{: RESULT = new GreatThEqNode(expr,trm); :}
+| expression EQUAL term		{: RESULT = new EqNode(expr,trm); :}
+| expression NOTEQUAL term		{: RESULT = new NotEqNode(expr,trm); :}
+| expression CONCAT term		{: RESULT = new ConcatNode(expr,trm); :}
 | expression LEFTBRACKET expression COLON expression RIGHTBRACKET
 | expression LEFTBRACKET exfpression COLON RIGHTBRACKET
 | expression LEFTBRACKET COLON expression RIGHTBRACKET
@@ -194,21 +194,21 @@ term
 ;
 
 term ::=
-factor
-| term MULTIPLY factor
-| term DIVIDE factor
-| term POWER factor
-| term AND factor
+factor:fac		{: RESULT = fax; :}
+| term:trm MULTIPLY factor:fac		{: RESULT = new MultiplyNode(trm,fac); :}
+| term:trm DIVIDE factor:fac		{: RESULT = new DivideNode(trm,fac); :}	
+| term:trm POWER factor:fac		{: RESULT = new PowerTermNode(trm,fac); :}
+| term:trm AND factor:fac		{: RESULT = new AndNode(trm,fac); :}
 ;
 
 factor ::=
-exponent POWER factor
-| exponent
+exponent:exp POWER factor:fac	{: RESULT = new PowerNode(exp,fac); :}
+| exponent:exp	{: RESULT = exp :}
 ;
 
 exponent ::=
-MINUS exponent 
-| final
+MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
+| final:fin {: RESULT = fin; :}
 ;
 
 final ::=
