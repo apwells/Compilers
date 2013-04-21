@@ -212,13 +212,13 @@ MINUS exponent
 ;
 
 final ::=
-accessor
-| LEFTPAREN expression RIGHTPAREN
-| INTLITERAL
-| FLOATLITERAL
-| BOOLLITERAL
-| CHARLITERAL
-| function_call
-| LENGTH LEFTPAREN expression RIGHTPAREN
-| sequence // This includes STRINGLITERAL
+accessor:acc	{: RESULT = acc; :}
+| LEFTPAREN expression:e RIGHTPAREN  {: RESULT =new BrackExprNode(e); :}
+| INTLITERAL:val	{: RESULT = new IntNode(val); :}
+| FLOATLITERAL:val	{: RESULT = new FloatNode(val); :}
+| BOOLLITERAL:val	{: RESULT = new BoolNode(val); :}
+| CHARLITERAL:val	{: RESULT = new CharNode(val); :}
+| function_call:func	{: RESULT = func;:}
+| LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e); :}
+| sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
 ;
