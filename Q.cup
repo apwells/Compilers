@@ -75,11 +75,11 @@ global_decl_list:declist global_decl:v
                 :}
 
 | global_decl:v
-{
+{:
                        List<DeclNode> res = new ArrayList<DeclNode>();
                        res.add(v);
                        RESULT = new DeclListNode(res);
-                   }
+                   :}
 ;
 
 global_decl ::= 
@@ -89,7 +89,7 @@ datatype_decl:datadecl 		{: RESULT = datadecl;:}
 ;
 
 function_decl ::= 
-FDEF ID:id LEFTPARENs parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclkNode(paramlist,id,ftype);:}
+FDEF ID:id LEFTPAREN parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclkNode(paramlist,id,ftype,block);:}
 ;
 
 var_type ::= 
@@ -127,7 +127,7 @@ var_type:v parameter_clist2:parlist
                        RESULT = new ParamListNode(res);
                    }
                 :}
-| {: RESULT= null:};
+| {: RESULT= null;:};
 
 parameter_clist2 ::= 
 COMMA var_type:v parameter_clist2:parlist
@@ -141,7 +141,7 @@ COMMA var_type:v parameter_clist2:parlist
                        RESULT = new ParamListNode(res);
                    }
                 :}
-| {: RESULT = null :};
+| {: RESULT = null;:};
 
 block ::= 
 LEFTBRACE local_decl_list:decllist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);:}
@@ -162,11 +162,11 @@ local_decl_list:declist var_decl:v
                    }
                 :}
 | var_decl:v
-{
+{:
                        List<DeclNode> res = new ArrayList<DeclNode>();
                        res.add(v);
                        RESULT = new DeclListNode(res);
-                   }
+                   :}
 ;
 
 statement_list ::=
@@ -295,7 +295,7 @@ factor:fac		{: RESULT = fac; :}
 
 factor ::=
 exponent:exp POWER factor:fac	{: RESULT = new PowerNode(exp,fac); :}
-| exponent:exp	{: RESULT = exp :}
+| exponent:exp	{: RESULT = exp ;:}
 ;
 
 exponent ::=
