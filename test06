@@ -1,4 +1,4 @@
-/*
+
 fdef sum(i: int, j:int) : int {
      return i + j;
 }
@@ -6,7 +6,7 @@ fdef sum(i: int, j:int) : int {
 fdef sum(i:float, j:float) : float {
      return i + j;
 }
-*/
+
 
 s1 : int = sum(-10,20);
 s1 : int = sum(-30,40);

@@ -62,6 +62,7 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(BlockNode n) {
 			
 			currentScope = currentScope.beginScope();
+			System.out.println("Began new scope");
 			
 			if (n.declarations!=null){
 				n.declarations.accept(this);
@@ -71,7 +72,7 @@ public class ScopeVisitor implements Visitor {
 			}
 			
 			currentScope = currentScope.endScope();
-
+			System.out.println("Exited current scope");
 
 			// TODO Auto-generated method stub
 			return null;
@@ -232,10 +233,19 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(FuncCallNode n) {
-			System.out.print(n.id);
-			System.out.print("(");
-			n.params.accept(this);
-			System.out.print(")");
+			System.out.println("Function " + n.id + " called. Checking if exists in scope");
+			if (currentScope.getRecursive(n.id) != null) {
+				// This has been defined
+				System.out.println("has been defined. Continuing happily");
+				n.params.accept(this);
+			} else {
+				Error.PrintError("Function " + n.id + " has not been defined before calling!");
+				n.params.accept(this);
+			}
+//			System.out.print(n.id);
+//			System.out.print("(");
+//			n.params.accept(this);
+//			System.out.print(")");
 
 			// TODO Auto-generated method stub
 			return null;
@@ -252,14 +262,20 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(FuncDeclNode n) {
-			System.out.print("fdef ");
-			System.out.print(n.id);
-			System.out.print("(");
+			//System.out.print("fdef ");
+			System.out.println("Function definiton found. Checking symbol table...");
+			if (currentScope.getRecursive(n.id) != null) {
+				
+			}
+			//System.out.print(n.id);
+			currentScope = currentScope.beginScope();	// We make a new scope for the params
+			//System.out.print("(");
 			n.params.accept(this);
-			System.out.print(")");
-			System.out.print(" : ");
+			//System.out.print(")");
+			//System.out.print(" : ");
 			n.type.accept(this);
 			n.block.accept(this);
+			currentScope = currentScope.endScope();
 			// TODO Auto-generated method stub
 			return null;
 		}
