@@ -23,14 +23,20 @@ public class SymbolTable {
 	
 	public SymbolTable beginScope() {
 		// Creates a new nested table
-		
 		SymbolTable newTable = new SymbolTable();
+		newTable.setParent(this);
+		children.add(newTable);
+		return newTable;
 		
 	}
 	
-	public void endScope() {
-		// Not sure if should be void
+	public void setParent(SymbolTable parent) {
+		this.parent = parent;
+	}
+	
+	public SymbolTable endScope() {
 		// Restore last table (does that mean it exits nested scope to return to parent scope?)
+		return parent;
 	}
 
 }
