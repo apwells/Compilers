@@ -11,6 +11,7 @@ public interface Visitor {
     public Object visit (BoolNode n); 
     public Object visit (CharNode n); 
     public Object visit (ConcatNode n); 
+    public Object visit (BrkExprNode n); 
     public Object visit (DatatypeNode n); 
     public Object visit (DeclListNode n); 
     public Object visit (DeclNode n); 
