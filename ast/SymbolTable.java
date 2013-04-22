@@ -3,12 +3,12 @@ package ast;
 import java.util.*;
 
 public class SymbolTable {
-	private Hashtable<String, Object> table;
+	/*private Hashtable<String, Object> table;
 	private SymbolTable parent;
 	private ArrayList<SymbolTable> children;
 	
 	public SymbolTable () {
-		this.table = new Hashtable<String,Object>();
+		this.table = new Hashtable<String,Object>;
 	}
 	   public SymbolTable put (String key, Object value) {
 		 table.put(key, value);
@@ -24,5 +24,5 @@ public class SymbolTable {
 		      }
 		    public SymbolTable endScope() {
 		         return parent;
-		      }
+		      }*/
 }
