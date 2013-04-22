@@ -40,31 +40,32 @@ public class QC {
 
 	public static void main(String[] args) {
 		try {
-                    boolean lexOnly = processCommandLine(args);
-                    lex = new Lexer(input);
+                   // boolean lexOnly = processCommandLine(args);
+                    lex = new Lexer(new java.io.FileReader(args[0]));
                     pccParser = new parser(lex);
-                    if (lexOnly) {
+                   /* if (lexOnly) {
                         lexicalAnalysisOnly();
                     } else {
-                       
-                        Symbol result = pccParser.parse();
+                       */
+                        pccParser.parse();
+                         //Symbol result = pccParser.parse();
                         
                         /* get the root of the AST built using semantic actions as specified in calc.cup */
                         /* root == null in case there were parsing errors in the input program */
-                        List root = (List)result.value;
+                      /*  List root = (List)result.value;
                         
                         
-                        /* simple traversal of the tree */
+                        /* simple traversal of the tree
                         if (root !=null) {
                             System.out.println("\nParsing completed\n\n");
                             /*
                             SimpleVisitor simpleVisitor = new SimpleVisitor();
                             root.accept(simpleVisitor);
-                            */
+                            
                         } else
                             System.out.println("Parsing failed");
-                        
-                    }
+                        */
+               //     }
                     }
                      catch  (Exception ex) {
 			ex.printStackTrace();
