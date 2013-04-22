@@ -56,18 +56,25 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(BoolNode n) {
+		n.accept(this);
+		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(CharNode n) {
+		n.accept(this);
+		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(ConcatNode n) {
+		n.value.accept(this);
+		System.out.print("::");
+		n.term.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
