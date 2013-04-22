@@ -336,7 +336,7 @@ MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
 
 final ::=
 accessor:acc	{: RESULT = acc; :}
-| LEFTPAREN expression:e RIGHTPAREN  {: //RESULT = e; :}
+| LEFTPAREN expression:e RIGHTPAREN  {: RESULT = new BrkExprNode(e); :}
 | INTLITERAL:val	{: RESULT = new IntNode(val); :}
 | FLOATLITERAL:val	{: RESULT = new FloatNode(val); :}
 | BOOLLITERAL:val	{: RESULT = new BoolNode(val); :}
