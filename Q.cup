@@ -42,7 +42,8 @@ non terminal TypeNode function_type;
 non terminal FuncDeclNode function_decl;
 non terminal ParamListNode parameter_clist, parameter_clist2;
 
-non terminal DeclListNode global_decl_list, global_decl, local_decl_list;
+non terminal DeclListNode global_decl_list, local_decl_list;
+non terminal DeclNode global_decl;
 non terminal DatatypeNode datatype_decl;
 
 non terminal BlockNode block;
@@ -79,14 +80,14 @@ type ::= BOOL {: RESULT = new TypeNode("bool");:}
 
 program ::= 
 global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);System.out.println("Parsing Complete"); :}
-| block {: new ProgramNode(blk,null);System.out.println("Parsing Complete"); :}
+| block:blk {: new ProgramNode(blk,null);System.out.println("Parsing Complete"); :}
 ;
 
 global_decl_list ::= 
 global_decl_list:declist global_decl:v 
 {: if (declist != null) {
                        declist.declarations.add(v);
-                       RESULT = new DeclListNode(decl.declarations);
+                       RESULT = new DeclListNode(declist.declarations);
                        
                    } else {
                        ArrayList<DeclNode> res = new ArrayList<DeclNode>();
@@ -110,7 +111,7 @@ datatype_decl:datadecl 		{: RESULT = datadecl;:}
 ;
 
 function_decl ::= 
-FDEF ID:id LEFTPAREN parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclkNode(paramlist,id,ftype,block);:}
+FDEF ID:id LEFTPAREN parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclNode(paramlist,id,ftype,blk);:}
 ;
 
 var_type ::= 
@@ -132,7 +133,7 @@ TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: RESULT = new DatatypeNode(
 
 function_type ::=
 VOID 		{: RESULT = new TypeNode("void");:}
-| type:t 	{: RESULT = new TypeNode(t);:}
+| type:t 	{: RESULT = t;:}
 ;
 
 //two-productions are needed to avoid ambiguity
@@ -165,8 +166,8 @@ COMMA var_type:v parameter_clist2:parlist
 | {: RESULT = null;:};
 
 block ::= 
-LEFTBRACE local_decl_list:decllist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);:}
-| LEFTBRACE statement_list RIGHTBRACE					{: RESULT = new BlockNode(stlist,null);:}
+LEFTBRACE local_decl_list:declist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);:}
+| LEFTBRACE statement_list:stlist RIGHTBRACE					{: RESULT = new BlockNode(stlist,null);:}
 ;
 
 // Local x only allows variable declarations
@@ -174,7 +175,7 @@ local_decl_list ::=
 local_decl_list:declist var_decl:v
 {: if (declist != null) {
                        declist.declarations.add(v);
-                       RESULT = new DeclListNode(decl.declarations);
+                       RESULT = new DeclListNode(declist.declarations);
                        
                    } else {
                        ArrayList<DeclNode> res = new ArrayList<DeclNode>();
@@ -206,9 +207,9 @@ statement:s statement_list:stlist
 
 statement ::= 
 assignment:ass		{: RESULT = ass;:}
-| function_call:func	{: RESULT = func;:}	
+| function_call:func SEMICOLON	{: RESULT = new FuncCallStmtNode(func);:}	
 | ifelse:ifel		{: RESULT = ifel;:}
-| while:who		{: RESULT = whi;:}
+| while:whi		{: RESULT = whi;:}
 | repeatuntil:rptuntil	{: RESULT = rptuntil;:}
 | return:ret		{: RESULT = ret;:}
 ;
@@ -226,7 +227,7 @@ REPEAT LEFTBRACE statement_list:stlist RIGHTBRACE UNTIL LEFTPAREN expression:e R
 ;
 
 function_call ::=
-ID:id LEFTPAREN expression_clist:elist RIGHTPAREN	{: RESULT = new FuncCallStmtNode(elist,id);:}
+ID:id LEFTPAREN expression_clist:elist RIGHTPAREN	{: RESULT = new FuncCallNode(elist,id);:}
 ;
 
 return ::= 
@@ -241,7 +242,7 @@ accessor:acc ASSIGN expression:e SEMICOLON	{: RESULT = new AssignNode(e,acc);:}
 sequence ::=
 STRINGLITERAL:s		{: RESULT = new StringLitNode(s);:}
 | tuple	:tup		{: RESULT = tup;:}
-| list:list		{: RESULT = lis;:}
+| list:lis		{: RESULT = lis;:}
 ;
 
 accessor ::=
@@ -253,7 +254,7 @@ ID:d {: ArrayList<String> res = new ArrayList<String>();
 		RESULT = new AccessorNode(acc.ids);
 		}
 		else
-		{ArrayList<ExprNode> res = new ArrayList<ExprNode>();
+		{ArrayList<String> res = new ArrayList<String>();
                    res.add(id);
                    RESULT = new AccessorNode(res);}
 :}

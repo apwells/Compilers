@@ -1,12 +1,10 @@
 package ast;
 
-public class FuncCallStmtNode {
-	protected ExprListNode params;
-	protected String id;
+public class FuncCallStmtNode extends StmtNode {
+	protected FuncCallNode function;
 	
-	public FuncCallStmtNode(ExprListNode params, String id) {
-		this.params = params;
-		this.id = id;
+	public FuncCallStmtNode(FuncCallNode func) {
+		this.function=func;
 	}
 	public Object accept(Visitor v) {
 		return v.visit(this);
