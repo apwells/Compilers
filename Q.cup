@@ -9,8 +9,10 @@ terminal LEFTTBRACKET, RIGHTTBRACKET;
 terminal LEFTPAREN, RIGHTPAREN;
 
 terminal BOOL, INT, FLOAT, STRING, LIST, CHAR, TUPLE, VOID;
-terminal ID, BOOLLITERAL, INTLITERAL, FLOATLITERAL, STRINGLITERAL, CHARLITERAL;
-
+terminal Boolean BOOLLITERAL;
+terminal Integer INTLITERAL; terminal Float FLOATLITERAL;terminal String STRINGLITERAL;
+terminal Character CHARLITERAL;
+terminal String ID;
 terminal FDEF, TDEF;
 
 terminal ASSIGN;
@@ -21,21 +23,38 @@ terminal LESSTHAN, LESSTHANEQUAL, GREATERTHAN, GREATERTHANEQUAL, EQUAL, NOTEQUAL
 
 terminal IF, ELSE, REPEAT, UNTIL, RETURN, DO, WHILE;
 
-non terminal type;
-non terminal expression, term, factor, exponent, final, accessor;
-non terminal sequence, list, tuple;
-non terminal expression_clist, expression_clist2;
-non terminal var_decl, var_type, var_init;
+non terminal TypeNode type;
+non terminal ExprNode expression;
+non terminal FinalNode final;
+non terminal TermNode term;
+non terminal FactorNode factor;
+non terminal ExponentNode exponent;
+non terminal AccessorNode accessor;
+non terminal SequenceNode sequence;
+non terminal ListNode list;
+non terminal TupleNode tuple;
+non terminal ExprListNode expression_clist,expression_clist2;
+non terminal VarDeclNode var_decl;
+non terminal VarTypeNode var_type;
+non terminal ExprListNode var_init;
 
-non terminal function_type, function_decl;
-non terminal parameter_clist, parameter_clist2;
+non terminal TypeNode function_type;
+non terminal FuncDeclNode function_decl;
+non terminal ParamListNode parameter_clist, parameter_clist2;
 
-non terminal global_decl_list, global_decl, local_decl_list;
-non terminal datatype_decl;
+non terminal DeclListNode global_decl_list, global_decl, local_decl_list;
+non terminal DatatypeNode datatype_decl;
 
-non terminal block, statement_list, statement;
-non terminal ifelse, repeatuntil, while, assignment, function_call, return;
-non terminal program;
+non terminal BlockNode block;
+non terminal StatementListNode statement_list;
+non terminal StmtNode statement;
+non terminal IfElseNode ifelse;
+non terminal RptUntilNode repeatuntil;
+non terminal WhileStmtNode while;
+non terminal AssignNode assignment;
+non terminal FuncCallNode function_call;
+non terminal ReturnStmtNode return;
+non terminal ProgramNode program;
 
 precedence right POWER;
 precedence left DIVIDE, MULTIPLY;

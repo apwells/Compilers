@@ -1,6 +1,6 @@
 package ast;
 
-public class IntNode {
+public class IntNode extends FinalNode{
 	protected int value;
 	
 	public IntNode (int value){
