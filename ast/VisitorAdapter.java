@@ -183,8 +183,14 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprTermNode n) {
+<<<<<<< HEAD
 		//n.term.accept(this);
 		//n.value.accept(this);
+=======
+		n.term.accept(this);
+		n.value.accept(this);
+	
+>>>>>>> s
 		// TODO Auto-generated method stub
 		return null;
 	}
