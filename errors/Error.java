@@ -18,8 +18,6 @@ public class Error {
 			System.out.println("Incorrect type" + error);
 			break;
 		}
-
- 
 		
 	}
 	
