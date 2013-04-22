@@ -10,7 +10,8 @@ terminal LEFTPAREN, RIGHTPAREN;
 
 terminal BOOL, INT, FLOAT, STRING, LIST, CHAR, TUPLE, VOID;
 terminal Boolean BOOLLITERAL;
-terminal Integer INTLITERAL; terminal Float FLOATLITERAL;terminal String STRINGLITERAL;
+terminal Integer INTLITERAL; terminal Float FLOATLITERAL;
+terminal String STRINGLITERAL;
 terminal Character CHARLITERAL;
 terminal String ID;
 terminal FDEF, TDEF;

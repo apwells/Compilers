@@ -40,13 +40,13 @@ public class QC {
 
 	public static void main(String[] args) {
 		try {
-                   // boolean lexOnly = processCommandLine(args);
-                    lex = new Lexer(new java.io.FileReader(args[0]));
+                    boolean lexOnly = processCommandLine(args);
+                    lex = new Lexer(input);
                     pccParser = new parser(lex);
-                   /* if (lexOnly) {
+                   if (lexOnly) {
                         lexicalAnalysisOnly();
                     } else {
-                       */
+                       
                         pccParser.parse();
                          //Symbol result = pccParser.parse();
                         
@@ -65,7 +65,7 @@ public class QC {
                         } else
                             System.out.println("Parsing failed");
                         */
-               //     }
+                  }
                     }
                      catch  (Exception ex) {
 			ex.printStackTrace();
