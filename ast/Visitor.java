@@ -9,7 +9,6 @@ public interface Visitor {
     public Object visit (BinaryTermNode n); 
     public Object visit (BlockNode n); 
     public Object visit (BoolNode n); 
-    public Object visit (BrackExprNode n); 
     public Object visit (CharNode n); 
     public Object visit (ConcatNode n); 
     public Object visit (DatatypeNode n); 
