@@ -16,8 +16,8 @@ public class Error {
 	 * 	Scope Errors
 	 */
 
-	public static void VariableAlreadyDeclared(){
-		PrintError("Variable Already Declared");
+	public static void VariableAlreadyDeclared(String id){
+		PrintError("Variable " +id+" Already Declared");
 	}
 	
 }

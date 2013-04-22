@@ -1,9 +1,9 @@
 //l1: list = ["a","b", "c", "d", "e"];
 //l2: list = [1,2,3,4,5];
  
-s1:string = "";
-s1:string = "re-declared. scope error";
-s2:string = "hello";
+// s1:string = "";
+// s1:string = "re-declared. scope error";
+// s2:string = "hello";
 
 {
 /*

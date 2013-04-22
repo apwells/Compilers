@@ -11,6 +11,7 @@ public class SymbolTable {
 	
 	public SymbolTable() {
 		// Initialize
+		children = new ArrayList<SymbolTable>();
 		table = new Hashtable<String, Object>();
 	}
 	

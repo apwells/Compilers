@@ -243,6 +243,7 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(FuncDeclNode n) {
+		System.out.print("fdef ");
 		System.out.print(n.id);
 		System.out.print("(");
 		n.params.accept(this);
