@@ -21,7 +21,9 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(AccessorNode n) {
 			for (String id : n.ids) {
 				
-				System.out.print("ACCESSOR" + id);
+				System.out.print(id);
+				
+				
 			}
 			// TODO Auto-generated method stub
 			return null;
