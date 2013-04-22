@@ -387,6 +387,10 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ParamListNode n) {
+		for(VarTypeNode a : n.params)
+		{
+			a.accept(this);
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -394,7 +398,7 @@ public class VisitorAdapter implements Visitor{
 	@Override
 	public Object visit(PlusNode n) {
 		n.value.accept(this);
-		System.out.print("+");
+		System.out.print(" + ");
 		n.term.accept(this);
 		return null;
 	}
@@ -424,6 +428,11 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ReturnStmtNode n) {
+		System.out.print("return ");
+		n.value.accept(this);
+		System.out.println(" ; ");
+
+
 		// TODO Auto-generated method stub
 		return null;
 	}
