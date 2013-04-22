@@ -1,12 +1,10 @@
 package ast;
 
 public class FuncCallStmtNode {
-	protected ExprListNode params;
-	protected String id;
+	protected FuncCallNode function;
 	
-	public FuncCallStmtNode(ExprListNode params, String id) {
-		this.params = params;
-		this.id = id;
+	public FuncCallStmtNode(FuncCallNode function) {
+		this.function = function;
 	}
 
 }
