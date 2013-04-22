@@ -3,11 +3,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java_cup.runtime.Symbol;
+import ast.*;
 
 public class QC {
 	private static Lexer lex;
 	private static parser pccParser;
     private static InputStream input = System.in;
+    
 
 	/**
 	 * Prints the int value of tokens created by the lexer object and values
@@ -43,9 +45,27 @@ public class QC {
                     if (lexOnly) {
                         lexicalAnalysisOnly();
                     } else {
-                        pccParser.parse();
+                       
+                        Symbol result = pccParser.parse();
+                        
+                        /* get the root of the AST built using semantic actions as specified in calc.cup */
+                        /* root == null in case there were parsing errors in the input program */
+                        List root = (List)result.value;
+                        
+                        
+                        /* simple traversal of the tree */
+                        if (root !=null) {
+                            System.out.println("\nParsing completed\n\n");
+                            /*
+                            SimpleVisitor simpleVisitor = new SimpleVisitor();
+                            root.accept(simpleVisitor);
+                            */
+                        } else
+                            System.out.println("Parsing failed");
+                        
                     }
-                    } catch  (Exception ex) {
+                    }
+                     catch  (Exception ex) {
 			ex.printStackTrace();
 			System.exit(1);
 		}

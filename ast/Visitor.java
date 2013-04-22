@@ -59,7 +59,8 @@ public interface Visitor {
     public Object visit (ThreeExprNode n); 
     public Object visit (TupleNode n); 
     public Object visit (TypeNode n); 
-    public Object visit (VarDeclNode n); 
+    public Object visit (VarDeclNode n);
+    public Object visit (VarTypeNode n);
     public Object visit (WhileStmtNode n); 
 
 }
