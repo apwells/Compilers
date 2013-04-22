@@ -2,8 +2,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java_cup.runtime.Symbol;
+import java_cup.runtime.*;
 import ast.*;
+import java.util.*;
 
 public class QC {
 	private static Lexer lex;

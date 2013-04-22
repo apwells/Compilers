@@ -1,4 +1,6 @@
 import java_cup.runtime.*;
+import ast.*;
+import java.util.*;
 
 terminal SEMICOLON, COMMA, DOT, COLON;
 terminal LEFTBRACE, RIGHTBRACE;
