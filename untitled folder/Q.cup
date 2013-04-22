@@ -146,7 +146,7 @@ var_type:v parameter_clist2:parlist
                        
                    } else {
                        ArrayList<VarTypeNode> res = new ArrayList<VarTypeNode>();
-                       res.add(v);
+                       parlist.params.add(v);
                        RESULT = new ParamListNode(res);
                    }
                 :}
@@ -160,7 +160,7 @@ COMMA var_type:v parameter_clist2:parlist
                        
                    } else {
                        ArrayList<VarTypeNode> res = new ArrayList<VarTypeNode>();
-                       res.add(v);
+                       parlist.params.add(v);
                        RESULT = new ParamListNode(res);
                    }
                 :}
@@ -284,15 +284,7 @@ expression:e expression_clist2:elist
 
 expression_clist2 ::= 
 COMMA expression:e expression_clist2:elist
-{:if(elist !=null) {
-		elist.expressions.add(e);
-		RESULT = new ExprListNode(elist.expressions);
-		}
-		else
-		{ArrayList<ExprNode> res = new ArrayList<ExprNode>();
-                   res.add(e);
-                   RESULT = new ExprListNode(res);} :}
-
+{:elist.expressions.add(e); RESULT = new ExprListNode(elist.expressions);:}
 | {: RESULT = null;:}	
 ;
 
