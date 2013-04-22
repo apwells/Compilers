@@ -25,6 +25,14 @@ public class SymbolTable {
 		return table.get(key);
 	}
 	
+	public Object getRecursive(String key) {
+		// Will look for a key in this table or any parent tables. (for scoping)
+		if (table.get(key) == null) {
+			return parent.getRecursive(key);
+		} 
+		return table.get(key);
+	}
+	
 	public SymbolTable beginScope() {
 		// Creates a new nested table
 		SymbolTable newTable = new SymbolTable();
