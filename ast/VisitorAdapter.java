@@ -439,18 +439,33 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(RptUntilNode n) {
+		System.out.print("repeat ");
+		System.out.print(" { ");
+		n.body.accept(this);
+		System.out.print(" } ");
+		System.out.print(" until ");
+		System.out.print(" ( ");
+		n.cond.accept(this);
+		System.out.print(" ) ");
+		System.out.print(" ; ");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(SequenceNode n) {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(StatementListNode n) {
+		for(StmtNode a : n.statements)
+		{
+			a.accept(this);
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -463,30 +478,45 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(StringLitNode n) {
+		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(TermNode n) {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(ThreeExprNode n) {
+		n.value1.accept(this);
+		System.out.print(" ( ");
+		n.value2.accept(this);
+		System.out.print(" : ");
+		n.value3.accept(this);
+		System.out.print(" ) ");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(TupleNode n) {
+		System.out.print(" [ ");
+		n.value.accept(this);
+		System.out.print(" ] ");
+
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(TypeNode n) {
+		System.out.print(n.type);
 		// TODO Auto-generated method stub
 		return null;
 	}
