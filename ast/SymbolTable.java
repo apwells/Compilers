@@ -2,15 +2,27 @@ package ast;
 
 import java.util.*;
 
-public class ExprListNode extends Node {
+public class SymbolTable {
+	private Hashtable<String, Object> table;
+	private SymbolTable parent;
+	private ArrayList<SymbolTable> children;
 	
-	public List<ExprNode> expressions;
-	
-	public ExprListNode (List<ExprNode> expressions) {
-		this.expressions = expressions;
+	public SymbolTable () {
+		this.table = new Hashtable<String,Object>();
 	}
-	public Object accept(Visitor v) {
-		return v.visit(this);
-	    }
-
+	   public SymbolTable put (String key, Object value) {
+		 table.put(key, value);
+		    }
+		    public Object get(String key) {
+		   return table.get(key);
+		}
+		    public SymbolTable beginScope() {
+		        SymbolTable newTable = new SymbolTable();
+		        newTable.setparent(this);
+		        children.addElement(newTable);
+		        return newTable;
+		      }
+		    public SymbolTable endScope() {
+		         return parent;
+		      }
 }
