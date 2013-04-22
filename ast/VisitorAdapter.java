@@ -79,8 +79,10 @@ public class VisitorAdapter implements Visitor{
 	@Override
 	public Object visit(ConcatNode n) {
 		//n.value.accept(this);
+		n.value.accept(this);
 		System.out.print("::");
 		//n.term.accept(this);
+		n.term.accept(this);
 		System.out.println(";");
 
 		// TODO Auto-generated method stub
@@ -186,11 +188,16 @@ public class VisitorAdapter implements Visitor{
 <<<<<<< HEAD
 		//n.term.accept(this);
 		//n.value.accept(this);
+<<<<<<< HEAD
 =======
 		n.term.accept(this);
 		n.value.accept(this);
 	
 >>>>>>> s
+=======
+		n.term.accept(this);
+		n.value.accept(this);
+>>>>>>> ha
 		// TODO Auto-generated method stub
 		return null;
 	}

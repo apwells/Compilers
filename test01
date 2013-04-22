@@ -1,5 +1,5 @@
 fdef sum(i: int, j:int) : int {
-     return i + 2 gaga;
+     return i + j;
 }
 
 fdef sum(i:float, j:float) : float {
@@ -11,10 +11,11 @@ fdef sum(i:float, j:float) : float {
 
   s1 : int = sum(-10,20);
   s2 : float = sum(10.0,-20.0);
-  b : bool;
+  b : bool = True;
+
   if (s1 < s2 || s1 == s2) {
      b  =  s1 + s2 / (s1 + s2) >= 30;
   } else {
-    /* do something else */
+     /* do something else */
   }
 }

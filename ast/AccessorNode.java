@@ -1,13 +1,14 @@
 package ast;
 
-import java.util.List;
+import java.util.*;
 
 public class AccessorNode extends FinalNode{
 	
-	public List<String> ids;
+	public ArrayList<String> ids;
 	
-	public AccessorNode(List<String> ids) {
-		this.ids = ids;
+	public AccessorNode(String id) {
+		this.ids = new ArrayList<String>();
+        this.ids.add(id);
 		
 	}
 	

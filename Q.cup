@@ -89,20 +89,17 @@ global_decl_list ::=
 global_decl_list:declist global_decl:v 
 {: if (declist != null) {
                        declist.declarations.add(v);
-                       RESULT = new DeclListNode(declist.declarations);
+                       RESULT = declist;
                        
                    } else {
-                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
-                       res.add(v);
-                       RESULT = new DeclListNode(res);
+                       
+                       RESULT = new DeclListNode(v);
                    }
                 :}
 
 | global_decl:v
 {:
-                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
-                       res.add(v);
-                       RESULT = new DeclListNode(res);
+                       RESULT = new DeclListNode(v);
                    :}
 ;
 
@@ -177,19 +174,17 @@ local_decl_list ::=
 local_decl_list:declist var_decl:v
 {: if (declist != null) {
                        declist.declarations.add(v);
-                       RESULT = new DeclListNode(declist.declarations);
+                       RESULT = declist;
                        
                    } else {
-                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
-                       res.add(v);
-                       RESULT = new DeclListNode(res);
+                       
+                       RESULT = new DeclListNode(v);
                    }
                 :}
+
 | var_decl:v
 {:
-                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
-                       res.add(v);
-                       RESULT = new DeclListNode(res);
+                       RESULT = new DeclListNode(v);
                    :}
 ;
 
@@ -205,7 +200,7 @@ statement:s statement_list:stlist
                        RESULT = new StatementListNode(res);
                    }
                 :}
-|{:RESULT = null;:};
+|{:RESULT = new StatementListNode(new ArrayList<StmtNode>());:};
 
 statement ::= 
 assignment:ass		{: RESULT = ass;:}
@@ -248,17 +243,15 @@ STRINGLITERAL:s		{: RESULT = new StringLitNode(s);:}
 ;
 
 accessor ::=
-ID:d {: ArrayList<String> res = new ArrayList<String>();
-                   res.add(d);
-                   RESULT = new AccessorNode(res); :}
-| accessor:acc DOT ID:id {:if(acc !=null) {
-		acc.ids.add(id);
-		RESULT = new AccessorNode(acc.ids);
+ID:d {: 
+                   RESULT = new AccessorNode(d); :}
+| accessor:acc DOT ID:d {:if(acc !=null) {
+		acc.ids.add(d);
+		RESULT = acc;
 		}
 		else
-		{ArrayList<String> res = new ArrayList<String>();
-                   res.add(id);
-                   RESULT = new AccessorNode(res);}
+		{
+                   RESULT = new AccessorNode(d);}
 :}
 ;
 
@@ -277,8 +270,7 @@ expression_clist:elist COMMA expression:e
 		RESULT = elist;
 		:}
 | 
-expression:e	{://ArrayList<ExprNode> res = new ArrayList<ExprNode>();
-                  // res.add(e);   
+expression:e	{: 
 		if(e!=null)	
 		 {System.out.println("after here2"+e);
                    RESULT = new ExprListNode(e); 

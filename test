@@ -1,5 +1,11 @@
-abc:list = [2/32,2.21];
-a:int;
+fdef sum(i:float, j:float, x:string,z:char) : void {
+     return i + j;
+}
+b:float = 2,5,6;
+b:float = 2,5,6;
+b:float = 2,5,6;
+b:float = 2;
+tdef person : name:string, surname:string, age:int; // person definition
 {
- 
+ ba.be.ac = 2+100*100;
 }
