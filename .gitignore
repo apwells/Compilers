@@ -1,10 +1,6 @@
 *.class
 makefile
-
 Lexer.java
-
 Lexer.java~
-
 parser.java
-
 sym.java
