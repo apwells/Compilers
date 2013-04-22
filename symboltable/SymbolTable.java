@@ -1,11 +1,12 @@
 package symboltable;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class SymbolTable {
 	
 	private SymbolTable parent;
-	private ArrayList children;
+	private ArrayList<SymbolTable> children;
 	
 	public SymbolTable() {
 		// Initialize
