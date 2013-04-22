@@ -1,11 +1,12 @@
-l1: list = ["a","b", "c", "d", "e"];
-l2: list = [1,2,3,4,5];
+//l1: list = ["a","b", "c", "d", "e"];
+//l2: list = [1,2,3,4,5];
  
 s1:string = "";
+s1:string = "re-declared. scope error";
 s2:string = "hello";
 
 {
-
+/*
   newlist : list = l1 :: l2;
   anotherlist : list = [s1] :: [s2] :: newlist;
   thirdlist : list = l2[:-2] :: l2[3:];
@@ -18,6 +19,6 @@ s2:string = "hello";
   } else {
      newlist = newlist - newlist[0];
   }
-
+*/
   
 }
