@@ -8,4 +8,8 @@ public class BlockNode extends Node {
 		this.statements = statements;
 		this.declarations = declarations;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

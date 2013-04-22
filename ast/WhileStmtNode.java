@@ -8,5 +8,8 @@ public class WhileStmtNode extends StmtNode{
 		this.cond = cond;
 		this.body = body;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

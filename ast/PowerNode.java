@@ -8,5 +8,8 @@ public class PowerNode extends FactorNode{
 		this.exponent = exponent;
 		this.factor = factor;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

@@ -9,5 +9,8 @@ public class DeclListNode {
 	public DeclListNode (List<DeclNode> declarations) {
 		this.declarations = declarations;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

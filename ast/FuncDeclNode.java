@@ -11,4 +11,8 @@ public class FuncDeclNode extends DeclNode {
 		this.type = type;
 		this.id = id;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

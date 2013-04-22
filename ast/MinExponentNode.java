@@ -6,5 +6,8 @@ public class MinExponentNode extends ExponentNode{
 	public MinExponentNode (ExponentNode exponent) {
 		this.exponent = exponent;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

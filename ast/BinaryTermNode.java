@@ -9,4 +9,8 @@ public class BinaryTermNode extends TermNode{
 		this.term = term;
 		this.factor = factor;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

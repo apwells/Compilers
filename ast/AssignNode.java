@@ -8,6 +8,9 @@ public class AssignNode extends StmtNode{
 		this.value = value;
 		this.var = var;
 	}
-	
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 
 }

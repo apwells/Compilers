@@ -6,5 +6,8 @@ public class LengthNode extends FinalNode{
 	public LengthNode (ExprNode value) {
 		this.value = value;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

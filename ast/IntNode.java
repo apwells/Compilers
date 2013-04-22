@@ -7,5 +7,8 @@ public class IntNode {
 		this.value = value;
 		
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

@@ -8,4 +8,8 @@ public class StatementListNode extends Node {
 	public StatementListNode (List<StmtNode> statements) {
 		this.statements = statements;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

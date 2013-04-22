@@ -6,5 +6,8 @@ public class StringLitNode extends SequenceNode{
 	public StringLitNode (String value) {
 		this.value = value;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

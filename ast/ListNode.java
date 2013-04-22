@@ -6,5 +6,8 @@ public class ListNode extends SequenceNode{
 	public ListNode(ExprListNode values) {
 		this.values = values;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

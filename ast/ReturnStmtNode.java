@@ -6,5 +6,8 @@ public class ReturnStmtNode  extends StmtNode{
 	public ReturnStmtNode(ExprNode value) {
 		this.value = value;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

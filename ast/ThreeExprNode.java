@@ -11,4 +11,8 @@ public class ThreeExprNode extends ExprNode{
 		this.value2 = value2;
 		this.value3 = value3;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

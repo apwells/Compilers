@@ -8,4 +8,8 @@ public class ProgramNode extends Node {
 		this.block = block;
 		this.declarations = declarations;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

@@ -6,7 +6,10 @@ public class MultiplyNode extends BinaryTermNode{
 		super(term, factor);
 	}
 	
-	
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 	
 
 }

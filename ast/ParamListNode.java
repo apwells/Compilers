@@ -11,5 +11,8 @@ public class ParamListNode extends Node {
 	public ParamListNode (List<VarTypeNode> params) {
 		this.params = params;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

@@ -9,4 +9,8 @@ public class ExprListNode extends Node {
 	public ExprListNode (List<ExprNode> expressions) {
 		this.expressions = expressions;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

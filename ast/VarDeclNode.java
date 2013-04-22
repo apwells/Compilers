@@ -9,5 +9,8 @@ public class VarDeclNode extends DeclNode{
 		this.declarations = declarations;
 		this.id = id;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

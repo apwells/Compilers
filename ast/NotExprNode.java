@@ -7,4 +7,8 @@ public class NotExprNode {
 	public NotExprNode (ExprNode value) {
 		this.value = value;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 }

@@ -11,5 +11,9 @@ public class AccessorNode extends FinalNode{
 		
 	}
 	
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
+
 
 }

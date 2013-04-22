@@ -11,5 +11,8 @@ public class IfElseNode extends StmtNode{
 		this.body = body;
 		this.elsebody = elsebody;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

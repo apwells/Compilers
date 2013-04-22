@@ -6,5 +6,8 @@ public class FloatNode extends FinalNode{
 	public FloatNode (float value) {
 		this.value = value;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }

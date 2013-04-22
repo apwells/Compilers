@@ -9,5 +9,8 @@ public class ExprTermNode extends Node{
 		this.value = value;
 		this.term = term;
 	}
+	public Object accept(Visitor v) {
+		return v.visit(this);
+	    }
 
 }
