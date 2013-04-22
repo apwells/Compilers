@@ -5,7 +5,9 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(AccessorNode n) {
-		
+		for (String id : n.ids) {
+			System.out.print(id);
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -164,8 +166,8 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprTermNode n) {
-		n.term.accept(this);
-		n.value.accept(this);
+		//n.term.accept(this);
+		//n.value.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
