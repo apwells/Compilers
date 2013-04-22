@@ -80,8 +80,9 @@ type ::= BOOL {: RESULT = new TypeNode("bool");:}
 ;
 
 program ::= 
-global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);System.out.println("Parsing Complete"); :}
+global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);System.out.println("Parsing Complete"); :}\
 | block:blk {: new ProgramNode(blk,null);System.out.println("Parsing Complete"); :}
+| error  {:System.out.print("Error");:}
 ;
 
 global_decl_list ::= 
