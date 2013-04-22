@@ -16,6 +16,8 @@ public class VisitorAdapter implements Visitor{
 		n.value.accept(this);
 		System.out.print("=");
 		n.var.accept(this);
+		System.out.println(";");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -25,6 +27,7 @@ public class VisitorAdapter implements Visitor{
 		n.value1.accept(this);
 		System.out.print("[:");
 		n.value2.accept(this);
+		System.out.print("]");
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -75,30 +78,44 @@ public class VisitorAdapter implements Visitor{
 		n.value.accept(this);
 		System.out.print("::");
 		n.term.accept(this);
+		System.out.println(";");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(DatatypeNode n) {
+		System.out.print(n.id);
+		System.out.print(":");
+		n.params.accept(this);
+		System.out.println(";");
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(DeclListNode n) {
+		for(DeclNode d : n.declarations){
+			d.accept(this);
+		}
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(DeclNode n) {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(DivideNode n) {
+		n.term.accept(this);
+		System.out.print(" / ");
+		n.factor.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -111,12 +128,19 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(EndColNode n) {
+		n.value1.accept(this);
+		System.out.print(" [ ");
+		n.value2.accept(this);
+		System.out.print(" :] ");
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(EqNode n) {
+		n.value.accept(this);
+		System.out.print(" == ");
+		n.term.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -129,6 +153,9 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprListNode n) {
+		for(ExprNode a : n.expressions){
+			a.accept(this);
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -142,12 +169,15 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprTermNode n) {
+		n.term.accept(this);
+		n.value.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(FactorNode n) {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -160,84 +190,142 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(FloatNode n) {
+		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(FuncCallNode n) {
+		System.out.print(n.id);
+		System.out.print(" ( ");
+		n.params.accept(this);
+		System.out.print(" ) ");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(FuncCallStmtNode n) {
+		n.function.accept(this);
+		System.out.print(";");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(FuncDeclNode n) {
+		System.out.print(n.id);
+		System.out.print(" ( ");
+		n.params.accept(this);
+		System.out.print(" ) ");
+		System.out.print(" : ");
+		n.type.accept(this);
+		n.block.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(GreatThEqNode n) {
+		n.value.accept(this);
+		System.out.print(" >= ");
+		n.term.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(GreatThNode n) {
+		n.value.accept(this);
+		System.out.print(" > ");
+		n.term.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(IfElseNode n) {
+		System.out.print(" if ");
+		System.out.print(" ( ");
+		n.cond.accept(this);
+		System.out.print(" ) ");
+		System.out.println(" { ");
+		n.body.accept(this);
+		System.out.print(" } ");
+		System.out.print(" else ");
+		System.out.println(" { ");
+		n.elsebody.accept(this);
+		System.out.println(" } ");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(InNode n) {
+		n.value.accept(this);
+		System.out.print(" in ");
+		n.term.accept(this);
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(IntNode n) {
+		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(LengthNode n) {
+		System.out.print(" len ");
+		System.out.print(" ( ");
+		n.value.accept(this);
+		System.out.print(" ) ");
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(LessThEqNode n) {
+		n.value.accept(this);
+		System.out.print(" <= ");
+		n.term.accept(this);
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(LessThNode n) {
+		n.value.accept(this);
+		System.out.print(" < ");
+		n.term.accept(this);
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(MinExponentNode n) {
+		System.out.print(" - ");
+		n.exponent.accept(this);
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(MinusNode n) {
+		n.value.accept(this);
+		System.out.print(" - ");
+		n.term.accept(this);
+
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -245,13 +333,19 @@ public class VisitorAdapter implements Visitor{
 	@Override
 	public Object visit(MultiplyNode n) {
 		n.term.accept(this);
-		System.out.print("+");
+		System.out.print(" * ");
 		n.factor.accept(this);
 		return null;
 	}
     
 	@Override
 	public Object visit(NoColNode n) {
+		n.value1.accept(this);
+		System.out.print(" ( ");
+		n.value2.accept(this);
+		System.out.print(" ) ");
+
+
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -264,18 +358,29 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(NotEqNode n) {
+		n.value.accept(this);
+		System.out.print(" != ");
+		n.term.accept(this);
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(NotExprNode n) {
+		System.out.print(" ! ");
+		n.value.accept(this);
+
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
 	public Object visit(OrNode n) {
+		n.value.accept(this);
+		System.out.print(" ! ");
+		n.term.accept(this);
+
 		// TODO Auto-generated method stub
 		return null;
 	}
