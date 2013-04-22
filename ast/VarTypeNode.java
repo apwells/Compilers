@@ -1,6 +1,6 @@
 package ast;
 
-public class VarTypeNode {
+public class VarTypeNode extends Node{
 	
 	protected TypeNode type;
 	protected String id;
