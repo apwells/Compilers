@@ -4,10 +4,12 @@ import java.util.*;
 
 public class ExprListNode extends Node {
 	
-	public List<ExprNode> expressions;
+	public ArrayList<ExprNode> expressions;
 	
-	public ExprListNode (List<ExprNode> expressions) {
-		this.expressions = expressions;
+	public ExprListNode (ExprNode expression) {
+        
+		this.expressions = new ArrayList<ExprNode>();
+        this.expressions.add(expression);
 	}
 	public Object accept(Visitor v) {
 		return v.visit(this);

@@ -271,31 +271,22 @@ LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist
 ;
 
 expression_clist ::= 
-expression:e expression_clist2:elist
-{:if(elist !=null) {
+expression_clist:elist COMMA expression:e
+{:         System.out.println("after here"+e);
 		elist.expressions.add(e);
-		RESULT = new ExprListNode(elist.expressions);
-		}
-		else
-		{ArrayList<ExprNode> res = new ArrayList<ExprNode>();
-                   res.add(e);
-                   RESULT = new ExprListNode(res);} :}
-| expression_clist2:elist2 {: RESULT = elist2;:}
+		RESULT = elist;
+		:}
+| 
+expression:e	{://ArrayList<ExprNode> res = new ArrayList<ExprNode>();
+                  // res.add(e);   
+		if(e!=null)	
+		 {System.out.println("after here2"+e);
+                   RESULT = new ExprListNode(e); 
+		}:}
+|
 ;
 
-expression_clist2 ::= 
-COMMA expression:e expression_clist2:elist
-{:if(elist !=null) {
-		elist.expressions.add(e);
-		RESULT = new ExprListNode(elist.expressions);
-		}
-		else
-		{ArrayList<ExprNode> res = new ArrayList<ExprNode>();
-                   res.add(e);
-                   RESULT = new ExprListNode(res);} :}
 
-| {: RESULT = null;:}	
-;
 
 expression ::=
 term:t				{: RESULT = t; :}

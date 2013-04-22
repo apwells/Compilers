@@ -167,7 +167,7 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprListNode n) {
-		for(ExprNode a : n.expressions){System.out.println(n.expressions.size());
+		for(ExprNode a : n.expressions){System.out.println("ssssize!"+n.expressions.size());
 			a.accept(this);
 		}
 		// TODO Auto-generated method stub
