@@ -3,15 +3,15 @@ package errors;
 public class Error {
 	
 	public enum Type{
-		DECL, NOTDECL, TYPE
+		DECLARED, NOTDECLARED, TYPE
 	}
 	
 	public static void PrintError(String error, Type t){
 		switch (t) {
-		case DECL:
+		case DECLARED:
 			System.out.println("Variable " + error + " has already been declared");
 			break;
-		case NOTDECL:
+		case NOTDECLARED:
 			System.out.println("Variable " + error + " has not been declared");
 			break;
 		case TYPE:
