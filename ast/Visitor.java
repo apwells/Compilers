@@ -34,7 +34,8 @@ public interface Visitor {
     public Object visit (IfElseNode n); 
     public Object visit (InNode n); 
     public Object visit (IntNode n); 
-    public Object visit (LengthNode n); 
+    public Object visit (LengthNode n);
+    public Object visit (ListNode n);
     public Object visit (LessThEqNode n); 
     public Object visit (LessThNode n); 
     public Object visit (MinExponentNode n); 

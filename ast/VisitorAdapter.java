@@ -43,10 +43,16 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(BlockNode n) {
-		System.out.print("{");
-		n.declarations.accept(this);
+		
+		if (n.declarations!=null){
+			n.declarations.accept(this);
+		}
+		if (n.statements!=null){
+			System.out.print("{");
 		n.statements.accept(this);
 		System.out.print("}");
+		}
+		
 
 
 
@@ -100,6 +106,17 @@ public class VisitorAdapter implements Visitor{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Object visit(ListNode n) {
+		System.out.print("[");
+		n.values.accept(this);
+		System.out.print("]");
+		
+		return null;
+
+		
+	}
     
 	@Override
 	public Object visit(DeclNode n) {
@@ -150,7 +167,7 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprListNode n) {
-		for(ExprNode a : n.expressions){
+		for(ExprNode a : n.expressions){System.out.println(n.expressions.size());
 			a.accept(this);
 		}
 		// TODO Auto-generated method stub
@@ -418,8 +435,9 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ProgramNode n) {
+		if (n==null) { System.out.println("Null programnode!");}
+		n.declarations.accept(this);
 		n.block.accept(this);
-		if(n.declarations!=null) n.declarations.accept(this);
 		return null;
 	}
     
