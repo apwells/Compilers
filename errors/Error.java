@@ -24,15 +24,6 @@ public class Error {
 	/*
 	 * 	Scope Errors
 	 */
-<<<<<<< HEAD
 
-	public static void VariableAlreadyDeclared(String id){
-		PrintError("Variable " +id+" Already Declared");
-=======
-/*
-	public static void VariableAlreadyDeclared(){
-		PrintError("Variable Already Declared");
->>>>>>> Error
-	}
-	*/
+
 }
