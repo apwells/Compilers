@@ -1,6 +1,10 @@
 package ast;
 
+<<<<<<< HEAD
 public class VarTypeNode extends Node{
+=======
+public class VarTypeNode exten {
+>>>>>>> fuuuckkk
 	
 	protected TypeNode type;
 	protected String id;
