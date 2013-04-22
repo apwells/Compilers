@@ -1,6 +1,6 @@
 package ast;
 
-public class ExprTermNode extends Node{
+public class ExprTermNode extends ExprNode{
 	
 	protected ExprNode value;
 	protected TermNode term;

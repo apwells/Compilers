@@ -1,12 +1,12 @@
 package ast;
 
-import java.util.List;
+import java.util.*;
 
 public class ExprListNode extends Node {
 	
-	protected List<ExprNode> expressions;
+	public ArrayList<ExprNode> expressions;
 	
-	public ExprListNode (List<ExprNode> expressions) {
+	public ExprListNode (ArrayList<ExprNode> expressions) {
 		this.expressions = expressions;
 	}
 	public Object accept(Visitor v) {

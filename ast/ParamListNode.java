@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ParamListNode extends Node {
 	
-	protected List<VarTypeNode> params;
+	public List<VarTypeNode> params;
 	
 	public ParamListNode (List<VarTypeNode> params) {
 		this.params = params;

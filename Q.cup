@@ -89,7 +89,7 @@ global_decl_list:declist global_decl:v
                        RESULT = new DeclListNode(decl.declarations);
                        
                    } else {
-                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
                        res.add(v);
                        RESULT = new DeclListNode(res);
                    }
@@ -97,7 +97,7 @@ global_decl_list:declist global_decl:v
 
 | global_decl:v
 {:
-                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
                        res.add(v);
                        RESULT = new DeclListNode(res);
                    :}
@@ -143,7 +143,7 @@ var_type:v parameter_clist2:parlist
                        RESULT = new ParamListNode(parlist.params);
                        
                    } else {
-                       List<VarTypeNode> res = new ArrayList<VarTypeNode>();
+                       ArrayList<VarTypeNode> res = new ArrayList<VarTypeNode>();
                        parlist.params.add(v);
                        RESULT = new ParamListNode(res);
                    }
@@ -157,7 +157,7 @@ COMMA var_type:v parameter_clist2:parlist
                        RESULT = new ParamListNode(parlist.params);
                        
                    } else {
-                       List<VarTypeNode> res = new ArrayList<VarTypeNode>();
+                       ArrayList<VarTypeNode> res = new ArrayList<VarTypeNode>();
                        parlist.params.add(v);
                        RESULT = new ParamListNode(res);
                    }
@@ -177,14 +177,14 @@ local_decl_list:declist var_decl:v
                        RESULT = new DeclListNode(decl.declarations);
                        
                    } else {
-                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
                        res.add(v);
                        RESULT = new DeclListNode(res);
                    }
                 :}
 | var_decl:v
 {:
-                       List<DeclNode> res = new ArrayList<DeclNode>();
+                       ArrayList<DeclNode> res = new ArrayList<DeclNode>();
                        res.add(v);
                        RESULT = new DeclListNode(res);
                    :}
@@ -197,7 +197,7 @@ statement:s statement_list:stlist
                        RESULT = new StatementListNode(stlist.statements);
                       
                    } else {
-                       List<StmtNode> res = new ArrayList<StmtNode>();
+                       ArrayList<StmtNode> res = new ArrayList<StmtNode>();
                        res.add(s);
                        RESULT = new StatementListNode(res);
                    }
@@ -245,16 +245,16 @@ STRINGLITERAL:s		{: RESULT = new StringLitNode(s);:}
 ;
 
 accessor ::=
-ID:d {: List<String> res = new ArrayList<String>();
+ID:d {: ArrayList<String> res = new ArrayList<String>();
                    res.add(d);
                    RESULT = new AccessorNode(res); :}
 | accessor:acc DOT ID:id {:if(acc !=null) {
 		acc.ids.add(id);
-		RESULT = new AccessortNode(acc.ids);
+		RESULT = new AccessorNode(acc.ids);
 		}
 		else
-		{List<ExprNode> res = new ArrayList<ExprNode>();
-                   res.add(e);
+		{ArrayList<ExprNode> res = new ArrayList<ExprNode>();
+                   res.add(id);
                    RESULT = new AccessorNode(res);}
 :}
 ;
@@ -274,7 +274,7 @@ expression:e expression_clist2:elist
 		RESULT = new ExprListNode(elist.expressions);
 		}
 		else
-		{List<ExprNode> res = new ArrayList<ExprNode>();
+		{ArrayList<ExprNode> res = new ArrayList<ExprNode>();
                    res.add(e);
                    RESULT = new ExprListNode(res);} :}
 | expression_clist2:elist2 {: RESULT = elist2;:}
@@ -326,7 +326,7 @@ MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
 
 final ::=
 accessor:acc	{: RESULT = acc; :}
-| LEFTPAREN expression:e RIGHTPAREN  {: RESULT = e; :}
+| LEFTPAREN expression:e RIGHTPAREN  {: //RESULT = e; :}
 | INTLITERAL:val	{: RESULT = new IntNode(val); :}
 | FLOATLITERAL:val	{: RESULT = new FloatNode(val); :}
 | BOOLLITERAL:val	{: RESULT = new BoolNode(val); :}
