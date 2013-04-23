@@ -85,9 +85,12 @@ public class TypeCheckHelper {
 		
 		// Now if it's an accessor or function
 		try { accessor = (AccessorNode) node; 
-			TypeNode typeNode = (TypeNode) currentScope.getRecursive(accessor.getWholeName());
-			return typeNode.type;
-		} catch (ClassCastException e) {}
+			VarTypeNode typeNode = (VarTypeNode) currentScope.getRecursive(accessor.getWholeName());
+			//System.out.println(" *** Type is " + typeNode.type.type + " *** ");
+			return typeNode.type.type;
+		} catch (ClassCastException e) { 
+			//System.out.println (" EXCEPTION !! " + e);
+		}
 		
 		return "type not found";
 		
