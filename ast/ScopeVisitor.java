@@ -187,6 +187,15 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(EqNode n) {
+			
+			if((typeHelp.isNum(n.term, currentScope) == false)
+					|| (typeHelp.isChar(n.term, currentScope) == false)
+					|| (typeHelp.isNum(n.value, currentScope) == false)
+					|| (typeHelp.isChar(n.value, currentScope) == false)){
+				
+	
+				Error.PrintError("in EQUAL expression", Error.Type.TYPE);
+			}
 			n.value.accept(this);
 			System.out.print(" == ");
 			n.term.accept(this);
@@ -332,7 +341,7 @@ public class ScopeVisitor implements Visitor {
 					|| (typeHelp.isChar(n.value, currentScope) == false)){
 				
 	
-				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+				Error.PrintError("in GREATERTHAN expression", Error.Type.TYPE);
 			}
 			n.value.accept(this);
 			System.out.print(" > ");
@@ -398,7 +407,7 @@ public class ScopeVisitor implements Visitor {
 					|| (typeHelp.isChar(n.value, currentScope) == false)){
 				
 	
-				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+				Error.PrintError("in LESSTHANEQUAL expression", Error.Type.TYPE);
 			}
 			n.value.accept(this);
 			System.out.print(" <= ");
@@ -417,7 +426,7 @@ public class ScopeVisitor implements Visitor {
 					|| (typeHelp.isChar(n.value, currentScope) == false)){
 				
 	
-				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+				Error.PrintError("in LESSTHAN expression", Error.Type.TYPE);
 			}
 			n.value.accept(this);
 			System.out.print(" < ");
@@ -480,6 +489,14 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(NotEqNode n) {
+			if((typeHelp.isNum(n.term, currentScope) == false)
+					|| (typeHelp.isChar(n.term, currentScope) == false)
+					|| (typeHelp.isNum(n.value, currentScope) == false)
+					|| (typeHelp.isChar(n.value, currentScope) == false)){
+				
+	
+				Error.PrintError("in NOTEQUAL expression", Error.Type.TYPE);
+			}
 			n.value.accept(this);
 			System.out.print(" != ");
 			n.term.accept(this);
