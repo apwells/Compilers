@@ -309,9 +309,10 @@ public class ScopeVisitor implements Visitor {
 			if((typeHelp.isNum(n.term, currentScope) == false)
 					|| (typeHelp.isChar(n.term, currentScope) == false)
 					|| (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.value, currentScope) == false)
-{
-				Error.PrintError("in AND expression", Error.Type.TYPE);
+					|| (typeHelp.isChar(n.value, currentScope) == false)){
+				
+	
+				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
 			}
 			
 			n.value.accept(this);
@@ -324,6 +325,15 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(GreatThNode n) {
+			
+			if((typeHelp.isNum(n.term, currentScope) == false)
+					|| (typeHelp.isChar(n.term, currentScope) == false)
+					|| (typeHelp.isNum(n.value, currentScope) == false)
+					|| (typeHelp.isChar(n.value, currentScope) == false)){
+				
+	
+				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+			}
 			n.value.accept(this);
 			System.out.print(" > ");
 			n.term.accept(this);
@@ -381,6 +391,15 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(LessThEqNode n) {
+			
+			if((typeHelp.isNum(n.term, currentScope) == false)
+					|| (typeHelp.isChar(n.term, currentScope) == false)
+					|| (typeHelp.isNum(n.value, currentScope) == false)
+					|| (typeHelp.isChar(n.value, currentScope) == false)){
+				
+	
+				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+			}
 			n.value.accept(this);
 			System.out.print(" <= ");
 			n.term.accept(this);
@@ -391,6 +410,15 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(LessThNode n) {
+			
+			if((typeHelp.isNum(n.term, currentScope) == false)
+					|| (typeHelp.isChar(n.term, currentScope) == false)
+					|| (typeHelp.isNum(n.value, currentScope) == false)
+					|| (typeHelp.isChar(n.value, currentScope) == false)){
+				
+	
+				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+			}
 			n.value.accept(this);
 			System.out.print(" < ");
 			n.term.accept(this);
