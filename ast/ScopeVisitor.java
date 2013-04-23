@@ -371,6 +371,9 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(InNode n) {
+			if((typeHelp.isBool(n.value, currentScope) == false) || typeHelp.isNum(n.value, currentScope) == false){
+				Error.PrintError("in MINUS expression", Error.Type.TYPE);
+			}
 			
 			
 			
@@ -712,7 +715,7 @@ public class ScopeVisitor implements Visitor {
 			System.out.print(" && ");
 			n.factor.accept(this);
 			
-			if((typeHelp.isBool(n.term, currentScope) == false)|| typeHelp.isBool(n.factor, currentScope) == false){
+			if((typeHelp.isBool(n.term, currentScope) == false) || typeHelp.isBool(n.factor, currentScope) == false){
 				Error.PrintError("in AND expression", Error.Type.TYPE);
 			}
 
