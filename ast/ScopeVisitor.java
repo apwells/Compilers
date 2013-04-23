@@ -20,19 +20,7 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(AccessorNode n) {
 			
-			String wholeName = "";
-			int i = 1;
-			
-			for (String id : n.ids) {
-				if (i ==1) {
-					wholeName = wholeName + id;
-				} else {
-					wholeName = wholeName +"."+ id;
-				}
-				i++;
-			}
-			
-			//System.out.println("********  " + wholeName + "  *****");
+			String wholeName = n.getWholeName();
 			
 				
 				if (currentScope.getRecursive(wholeName) == null) {
@@ -49,8 +37,14 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(AssignNode n) {
 			n.value.accept(this);
+			if (typeHelp.isInt(n.value, currentScope)) {
+				System.out.print("FOUND INT");
+			}
 			System.out.print("=");
 			n.var.accept(this);
+			if (typeHelp.isInt(n.var, currentScope)) {
+				System.out.print("FOUND INT");
+			}
 			System.out.println(";");
 
 			// TODO Auto-generated method stub
@@ -634,10 +628,10 @@ public class ScopeVisitor implements Visitor {
 			
 			n.term.accept(this);
 			System.out.println("AndNode :: "+n.term.toString());
-			typeHelp.checkForBool(n.term, currentScope);
+			typeHelp.isBool(n.term, currentScope);
 			System.out.print(" && ");
 			n.factor.accept(this);
-			typeHelp.checkForBool(n.factor, currentScope);
+			typeHelp.isBool(n.factor, currentScope);
 
 			// TODO Auto-generated method stub
 			return null;

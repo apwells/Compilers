@@ -12,5 +12,7 @@
 {
 	b1 = b2 && true;
 	b6.hello.isastring = "hello";
+	
+	myid = 6;
 
 }
