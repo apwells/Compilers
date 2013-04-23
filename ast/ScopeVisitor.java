@@ -180,6 +180,10 @@ public class ScopeVisitor implements Visitor {
 			n.values.accept(this);
 			System.out.print("]");
 			
+			if(typeHelp.checkSequence(n, currentScope) != "bool") {
+				Error.PrintError("in VALUE2 of THREEEXPRNODE expression", Error.Type.TYPE);
+				
+			}
 			return null;
 
 			
@@ -238,7 +242,7 @@ public class ScopeVisitor implements Visitor {
 			if((typeHelp.isNum(n.term, currentScope) == false)
 					|| (typeHelp.isChar(n.term, currentScope) == false)
 					|| (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.value, currentScope) == false)){
+					|| (typeHelp.isBool(n.value, currentScope) == false)){
 				
 	
 				Error.PrintError("in EQUAL expression", Error.Type.TYPE);
