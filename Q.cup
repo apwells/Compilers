@@ -1,6 +1,7 @@
 import java_cup.runtime.*;
 import ast.*;
 import java.util.*;
+import java.lang.*;
 
 terminal SEMICOLON, COMMA, DOT, COLON;
 terminal LEFTBRACE, RIGHTBRACE;
@@ -11,7 +12,7 @@ terminal LEFTPAREN, RIGHTPAREN;
 terminal BOOL, INT, FLOAT, STRING, LIST, CHAR, TUPLE, VOID;
 terminal Boolean BOOLLITERAL;
 terminal Integer INTLITERAL; terminal Float FLOATLITERAL;
-terminal String STRINGLITERAL;
+terminal java.lang.String STRINGLITERAL;
 terminal Character CHARLITERAL;
 terminal String ID;
 terminal FDEF, TDEF;
@@ -128,7 +129,7 @@ ASSIGN expression_clist:elist	{: RESULT = elist;:}
 
 datatype_decl ::=
 TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: 
-	System.out.println("CUP: Tdef found");
+	//System.out.println("CUP: Tdef found");
 	RESULT = new DatatypeNode(parlist,id);:}
 ;
 
@@ -240,10 +241,8 @@ accessor:acc ASSIGN expression:e SEMICOLON	{: RESULT = new AssignNode(e,acc);:}
 
 sequence ::=
 STRINGLITERAL:s		{: 
-					System.out.println("Found a string liter : " + s);
-					String literal = new String(s);
-					//literal = literal.substring(literal.indexOf("\"") + 1, literal.lastIndexOf("\""));
-					RESULT = new StringLitNode(literal);
+					//System.out.println("Found a string liter : " + s);
+					RESULT = new StringLitNode(s);
 					:}
 | tuple	:tup		{: RESULT = tup;:}
 | list:lis		{: RESULT = lis;:}
@@ -274,9 +273,9 @@ LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist
 // Problem is actually with strings, as ints seem to work fine..
 expression_clist ::= 
 expression_clist:elist COMMA expression:e
-{:         System.out.println("after here"+e);
+{:         //System.out.println("after here"+e);
 		if (elist == null) {
-			System.out.println("elist is NULL!");
+			//System.out.println("elist is NULL!");
 			elist = new ExprListNode(e);		// This line might be a bad idea... Trying to fix null pointer prob
 		} else {
 			elist.expressions.add(e);
@@ -286,7 +285,7 @@ expression_clist:elist COMMA expression:e
 | 
 expression:e	{: 
 		if(e!=null)	
-		 {System.out.println("after here2"+e);
+		 {//System.out.println("after here2"+e);
                    RESULT = new ExprListNode(e); 
 		}:}
 |
@@ -330,7 +329,7 @@ exponent:exp POWER factor:fac	{: RESULT = new PowerNode(exp,fac); :}
 exponent ::=
 MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
 | final:fin {: RESULT = fin;
-			System.out.println("Created final:fin looks like " + fin.toString());
+			//System.out.println("Created final:fin looks like " + fin.toString());
 			 :}
 ;
 
@@ -343,5 +342,9 @@ accessor:acc	{: RESULT = acc; :}
 | CHARLITERAL:val	{: RESULT = new CharNode(val); :}
 | function_call:func	{: RESULT = func;:}
 | LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e); :}
-| sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
+//| sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
+// Dirty fix. Endless error when i use the line above instead. Absolute mystery why...?!
+| STRINGLITERAL:s   {: RESULT = new StringLitNode(s); :}
+| tuple	:tup		{: RESULT = tup;:}
+| list:lis		{: RESULT = lis;:}
 ;

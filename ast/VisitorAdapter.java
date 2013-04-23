@@ -48,9 +48,9 @@ public class VisitorAdapter implements Visitor{
 			n.declarations.accept(this);
 		}
 		if (n.statements!=null){
-			System.out.print("{");
+			System.out.println("{");
 		n.statements.accept(this);
-		System.out.print("}");
+		System.out.println("}");
 		}
 		
 
@@ -169,9 +169,10 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ExprListNode n) {
-		for(ExprNode a : n.expressions){System.out.println("ssssize!"+n.expressions.size());
-			System.out.println("ExprNode for loop : " + a.toString());
+		for(ExprNode a : n.expressions){
+			//System.out.println("ExprNode for loop : " + a.toString());
 			a.accept(this);
+			System.out.print(", ");
 		}
 		// TODO Auto-generated method stub
 		return null;
