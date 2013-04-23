@@ -127,7 +127,9 @@ ASSIGN expression_clist:elist	{: RESULT = elist;:}
 ;
 
 datatype_decl ::=
-TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: RESULT = new DatatypeNode(parlist,id);:}
+TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: 
+	System.out.println("CUP: Tdef found");
+	RESULT = new DatatypeNode(parlist,id);:}
 ;
 
 function_type ::=
@@ -267,6 +269,10 @@ LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist
 expression_clist ::= 
 expression_clist:elist COMMA expression:e
 {:         System.out.println("after here"+e);
+		if (elist == null) {
+			System.out.println("elist is NULL!");
+			elist = new ExprListNode(null);
+		}
 		elist.expressions.add(e);
 		RESULT = elist;
 		:}

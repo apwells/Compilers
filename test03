@@ -7,7 +7,7 @@ tdef family : mother:person, father:person, children:list; // family definition
 
 // here we generate
 /* a family */
-
+/*
   m:person = "aaaaAAA", "bbBB0_i", 40;
   p:person = "aaabAAA", "bbBB0_i", 35;
   c1:person = "aaabAAA", "bbBB0_i", 1;
@@ -16,4 +16,5 @@ tdef family : mother:person, father:person, children:list; // family definition
 
   f: family = m,p,[c1,c2];
   f.children = f.children :: [c3];
+  */
 }
