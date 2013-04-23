@@ -273,6 +273,7 @@ LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist
 // Problem is actually with strings, as ints seem to work fine..
 expression_clist ::= 
 expression_clist:elist COMMA expression:e
+<<<<<<< HEAD
 {:         //System.out.println("after here"+e);
 		if (elist == null) {
 			//System.out.println("elist is NULL!");
@@ -289,6 +290,20 @@ expression:e	{:
                    RESULT = new ExprListNode(e); 
 		}:}
 |
+=======
+{:         if(e!=null){if(elist!=null){
+		elist.expressions.add(e);
+		RESULT = elist;}else
+		{
+		RESULT = new ExprListNode(e); 
+		}}else RESULT= elist;
+		:}
+| 
+expression:e	{: 
+		 
+                   if(e!=null)RESULT = new ExprListNode(e); 
+		:}
+>>>>>>> aha
 ;
 
 
