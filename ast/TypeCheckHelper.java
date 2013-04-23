@@ -93,6 +93,39 @@ public class TypeCheckHelper {
 		
 	}
 	
+	/*
+	 *  Returns the type of the elements in the list. Checks that the seuqnce all have the same type (unless its a tuple).
+	 */
+	public String checkSequence(SequenceNode node, SymbolTable currentScope) {
+		
+		ListNode list = null;
+		String type = "";
+		try {list = (ListNode) node;} catch (Exception e) {}
+		
+		if (list != null) {
+			for (ExprNode listItem : list.values.expressions) {
+				if (type != "") {
+					try {
+						if (type != getType(listItem, currentScope)) { System.out.println("TCH : List found to be inconsistent"); return "BAD LIST"; }
+					} catch (Exception e) {
+						System.out.println ("Exception in checkSequence : " + e);
+					}
+				} else {
+					try {
+						type = getType(listItem, currentScope);	// First item of list sets the type
+						System.out.println("TCH : Checking list. First item found to be " + type);
+					} catch (Exception e) {
+						System.out.println ("Exception in checkSequence : " + e);
+					}
+				}
+			}
+			
+		}
+		
+		return type;
+		
+	}
+	
 	public boolean isChar(Node node, SymbolTable currentScope) {
 		try {
 			if (getType(node, currentScope) == "char") {
