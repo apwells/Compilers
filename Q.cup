@@ -358,7 +358,7 @@ accessor:acc	{: RESULT = acc; :}
 | function_call:func	{: RESULT = func;:}
 | LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e); :}
 //| sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
-// Dirty fix. Endless error when i use the line above instead. Absolute mystery why...?!
+// Dirty fix. Endless error when i use the line above instead. Absolute mystery why...?! asdfasdf
 | STRINGLITERAL:s   {: RESULT = new StringLitNode(s); :}
 | tuple	:tup		{: RESULT = tup;:}
 | list:lis		{: RESULT = lis;:}
