@@ -16,4 +16,6 @@ s3:string = "One Thousand and One Nights";
      else {}
      i = i + 1;
   }
+ a=2;
+b="buhu";
 }

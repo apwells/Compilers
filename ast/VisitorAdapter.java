@@ -15,9 +15,9 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(AssignNode n) {
-		n.value.accept(this);
-		System.out.print("=");
 		n.var.accept(this);
+		System.out.print("=");
+		n.value.accept(this);
 		System.out.println(";");
 
 		// TODO Auto-generated method stub
@@ -495,9 +495,9 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(StatementListNode n) {
-		for(StmtNode a : n.statements)
+        for(int i=n.statements.size()-1;i>=0;i--)
 		{
-			a.accept(this);
+			n.statements.get(i).accept(this);
 		}
 		// TODO Auto-generated method stub
 		return null;
@@ -568,11 +568,11 @@ public class VisitorAdapter implements Visitor{
 	public Object visit(WhileStmtNode n) {
 		System.out.print(" while ");
 		System.out.print("(");
-		n.body.accept(this);
+		n.cond.accept(this);
 		System.out.print(")");
 		System.out.print(" do ");
 		System.out.println(" { ");
-		n.cond.accept(this);
+		n.body.accept(this);
 		System.out.print("}");
 
 		// TODO Auto-generated method stub
