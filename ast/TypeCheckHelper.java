@@ -92,6 +92,16 @@ public class TypeCheckHelper {
 			//System.out.println (" EXCEPTION !! " + e);
 		}
 		
+		// I dont think the above does functions actually.. Try this
+		
+		try {
+			FuncCallNode funcCall = (FuncCallNode) node;
+			// System.out.println("** TCH : GetType found a function. It's type is " + getTypeById(funcCall.id, currentScope));
+			return getTypeById(funcCall.id, currentScope);
+		} catch (Exception e) {
+			// System.out.println("** TCH : Gettype found function but had exception : " + e);
+		}
+		
 		return "type not found";
 		
 	}
@@ -126,7 +136,30 @@ public class TypeCheckHelper {
 		}
 		
 		return type;
+	}
+	
+	/*
+	 * 
+	 * This isn't really complete. Only deals with function names right now...
+	 */
+	public String getTypeById (String id, SymbolTable currentScope) {
 		
+		Object node = (Object)currentScope.getRecursive(id);
+		//System.out.println("\n id recieved from getTypeById is " + id);
+		//System.out.println("Symbol Table is "+currentScope.toString());
+		//System.out.println("\n!!! Get Type by id node is " + node.toString() + "   <<");
+		// If its a function call
+		try {
+		FuncDeclNode funcDecl = (FuncDeclNode) node;
+		//System.out.println("Var type : " + funcDecl.type.type);
+		return funcDecl.type.type;
+		} catch (Exception e) {
+			// Was not a function call
+		}
+		
+		
+		
+		return "cannot find type";
 	}
 	
 	public boolean isChar(Node node, SymbolTable currentScope) {
@@ -151,6 +184,46 @@ public class TypeCheckHelper {
 		
 		//System.out.println("Error in TypeCheckHelper. Node was null. Don't send null nodes to getAccessorType!");
 		return "getAccessorType error : null node";
+		
+	}
+	
+	/*
+	 *  Should return type of list, or tell us if its inconsistent
+	 */
+	public String getTypeOfExprList(ExprListNode exprList, SymbolTable currentScope) {
+		String type = "";
+		for (ExprNode expr : exprList.expressions) {
+			
+			String parentClass = expr.getClass().getSuperclass().getSimpleName();
+			
+			
+			//parentClass.
+			if (!parentClass.equalsIgnoreCase("ExprTermNode")) {
+				// We don't want to include these (things like +, - etc.)
+				//System.out.println("1231231231231242745912345621398475623498756 "+parentClass);
+				// This will run on the first iteration. Sets the desired type
+				if (type == "") {
+					type = getType(expr, currentScope);
+				}
+					if (getType(expr, currentScope) != type) {
+						// This means types differ. Let's see if we can do implicit conversion
+						
+						if (type == "int" && getType(expr, currentScope) == "float") {
+							type = "float";
+						} else if (type == "float" && getType(expr, currentScope) == "int") {
+							type = "float";
+						} else {
+							return "type inconsistent on expression list";
+						}
+						
+					}
+				}
+				
+			}
+			
+
+		
+		return type;
 		
 	}
 

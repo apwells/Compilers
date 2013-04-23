@@ -1,5 +1,6 @@
-l1: list = ["a","b", "c", "d", "e"];
-//l2: list = [1,2,3,4,5];
+oh : string = "a";
+l1: list = [oh ,"b", "c", "d", "e"];
+l2: list = [1,2,3,4,5];
  
 // s1:string = "";
 // s1:string = "re-declared. scope error";
