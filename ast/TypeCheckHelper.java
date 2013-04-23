@@ -4,115 +4,50 @@ import symboltable.SymbolTable;
 
 public class TypeCheckHelper {
 	
-	public boolean isBool(ExprNode term, SymbolTable currentScope) throws ClassCastException {
-		
-		BoolNode isBool = null;
-		AccessorNode isId = null;
+	public boolean isBool(Node node, SymbolTable currentScope) throws ClassCastException {
 		
 		try {
-		isBool = (BoolNode) term;
-		} catch (ClassCastException e) { 
-		}
-		
-		try {
-			isId = (AccessorNode) term;
-		} catch (ClassCastException e) { } 
-		
-		if (isBool != null) {
-			//System.out.println("Detected that term was a bool literal!");
-			return true;
-		}
-		
-		if (isId != null) {
-			//System.out.println("Detected that term was a ID (could be of type bool)!");
-			for (String id : isId.ids) {
-				VarTypeNode node = (VarTypeNode)currentScope.getRecursive(id);	// May throw exception... Try catch?
-				if (node.type.type == "bool") {
-					//System.out.println("OMG IT WAS A FUCKING BOOL AFTER ALL!");
-					return true;
-				}
-			}
-		}
-		
-		return false;
-		
-	}
-	
-	public boolean isInt(ExprNode node, SymbolTable currentScope) {
-		
-		IntNode myInt = null;
-		String type= "";
-		
-		try {
-			myInt = (IntNode) node;
-			if (myInt != null) {
+			if (getType(node, currentScope) == "bool") {
 				return true;
 			}
-		} catch (ClassCastException e) {
-			
-		}
-		
-		try {
-			AccessorNode isId = (AccessorNode) node;
-			type = getAccessorType(isId, currentScope);
-			if (type == "int") {return true;}
-		} catch (ClassCastException e) {}
-	
+		} catch (Exception e) {}
 		return false;
+		
 	}
 	
-	public boolean isFloat(ExprNode node, SymbolTable currentScope) {
-		FloatNode myFloat = null;
-		String type = "";
-				
+	public boolean isInt(Node node, SymbolTable currentScope) {
+		
 		try {
-			myFloat = (FloatNode) node;
-			if (myFloat != null) {
+			if (getType(node, currentScope) == "int") {
 				return true;
 			}
-		} catch (ClassCastException e){
-			// Wasn't a float node
-		}
-		
-		try {
-			AccessorNode isId = (AccessorNode) node;
-			type = getAccessorType(isId, currentScope);
-			if (type == "float") {return true;}
-		} catch (ClassCastException e) {
-			// Wasn't an accessor of type float
-		}
-		
+		} catch (Exception e) {}
 		return false;
 	}
 	
-	public boolean isNum(ExprNode node, SymbolTable currentScope) {
+	public boolean isFloat(Node node, SymbolTable currentScope) {
+		try {
+			if (getType(node, currentScope) == "float") {
+				return true;
+			}
+		} catch (Exception e) {}
+		return false;
+	}
+	
+	public boolean isNum(Node node, SymbolTable currentScope) {
 		if (isInt(node, currentScope) || isFloat(node, currentScope)) {
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean isString(ExprNode node, SymbolTable currentScope) {
-		
-		StringLitNode stringLit = null;
-		String type = "";
+	public boolean isString(Node node, SymbolTable currentScope) {
 		
 		try {
-			stringLit = (StringLitNode) node;
-			if (stringLit != null) {
+			if (getType(node, currentScope) == "string") {
 				return true;
 			}
-		} catch (ClassCastException e){
-			// Wasn't a float node
-		}
-		
-		try {
-			AccessorNode isId = (AccessorNode) node;
-			if (getAccessorType(isId, currentScope) == "string") {return true;}
-		} catch (ClassCastException e) {
-			// Wasn't an accessor of type float
-		}
-		
+		} catch (Exception e) {}
 		return false;
 	}
 	
@@ -159,9 +94,11 @@ public class TypeCheckHelper {
 	}
 	
 	public boolean isChar(Node node, SymbolTable currentScope) {
-		if (getType(node, currentScope) == "char") {
-			return true;
-		}
+		try {
+			if (getType(node, currentScope) == "char") {
+				return true;
+			}
+		} catch (Exception e) {}
 		return false;
 	}
 	
