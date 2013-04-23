@@ -62,7 +62,7 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(BoolNode n) {
-		n.accept(this);
+		//n.accept(this);
 		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
@@ -70,7 +70,7 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(CharNode n) {
-		n.accept(this);
+		//n.accept(this);
 		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
@@ -91,8 +91,8 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(DatatypeNode n) {
-		System.out.print(n.id);
-		System.out.print(":");
+		System.out.print("tdef "+n.id);
+		System.out.print(" : ");
 		n.params.accept(this);
 		System.out.println(";");
 		// TODO Auto-generated method stub
@@ -170,6 +170,7 @@ public class VisitorAdapter implements Visitor{
 	@Override
 	public Object visit(ExprListNode n) {
 		for(ExprNode a : n.expressions){System.out.println("ssssize!"+n.expressions.size());
+			System.out.println("ExprNode for loop : " + a.toString());
 			a.accept(this);
 		}
 		// TODO Auto-generated method stub
@@ -412,9 +413,14 @@ public class VisitorAdapter implements Visitor{
     
 	@Override
 	public Object visit(ParamListNode n) {
+		int i = 1;
 		for(VarTypeNode a : n.params)
 		{
 			a.accept(this);
+			if (i < n.params.size()) {
+				System.out.print(", "); // Should these always be comma seperated? This should not affect last item
+			}
+			i++;
 		}
 		// TODO Auto-generated method stub
 		return null;

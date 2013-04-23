@@ -92,6 +92,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(CharNode n) {
+			System.out.println("Charnode visit called!");
 			// n.accept(this);
 			System.out.print(n.value);
 			// TODO Auto-generated method stub

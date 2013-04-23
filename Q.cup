@@ -239,7 +239,12 @@ accessor:acc ASSIGN expression:e SEMICOLON	{: RESULT = new AssignNode(e,acc);:}
 ;
 
 sequence ::=
-STRINGLITERAL:s		{: RESULT = new StringLitNode(s);:}
+STRINGLITERAL:s		{: 
+					System.out.println("Found a string liter : " + s);
+					String literal = new String(s);
+					//literal = literal.substring(literal.indexOf("\"") + 1, literal.lastIndexOf("\""));
+					RESULT = new StringLitNode(literal);
+					:}
 | tuple	:tup		{: RESULT = tup;:}
 | list:lis		{: RESULT = lis;:}
 ;
@@ -266,14 +271,16 @@ LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist
 ;
 
 // Null Pointer Exceptions going on here. Because elist is never initialized i believe...
+// Problem is actually with strings, as ints seem to work fine..
 expression_clist ::= 
 expression_clist:elist COMMA expression:e
 {:         System.out.println("after here"+e);
 		if (elist == null) {
 			System.out.println("elist is NULL!");
-			elist = new ExprListNode(null);
+			elist = new ExprListNode(e);		// This line might be a bad idea... Trying to fix null pointer prob
+		} else {
+			elist.expressions.add(e);
 		}
-		elist.expressions.add(e);
 		RESULT = elist;
 		:}
 | 
@@ -322,7 +329,9 @@ exponent:exp POWER factor:fac	{: RESULT = new PowerNode(exp,fac); :}
 
 exponent ::=
 MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
-| final:fin {: RESULT = fin; :}
+| final:fin {: RESULT = fin;
+			System.out.println("Created final:fin looks like " + fin.toString());
+			 :}
 ;
 
 final ::=
