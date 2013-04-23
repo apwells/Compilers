@@ -226,5 +226,20 @@ public class TypeCheckHelper {
 		return type;
 		
 	}
+	
+	
+	public boolean isPrimitive (String type) {
+		if (type == "int" || type == "float" || type == "char" || type == "bool") {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isPrimitiveNoBool (String type) {
+		if (isPrimitive(type) && type != "bool") {
+			return true;
+		}
+		return false;
+	}
 
 }

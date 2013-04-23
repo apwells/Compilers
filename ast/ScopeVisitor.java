@@ -239,10 +239,15 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(EqNode n) {
 			
-			if((typeHelp.isNum(n.term, currentScope) == false) && (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.term, currentScope) == false) && (typeHelp.isChar(n.value, currentScope) == false)
-					|| (typeHelp.isBool(n.value, currentScope) == false) && (typeHelp.isBool(n.term, currentScope) == false)){
-				Error.PrintError("in EQUAL expression", Error.Type.TYPE);
+			String termType = typeHelp.getType(n.term, currentScope);
+			String valueType = typeHelp.getType(n.value, currentScope);
+			
+			if (termType != valueType) {
+				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
+					if (!typeHelp.isPrimitive(termType)) {
+						Error.PrintError("in EQUAL expression!!!", Error.Type.TYPE);
+					}
+				}
 			}
 			n.value.accept(this);
 			System.out.print(" == ");
