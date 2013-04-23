@@ -177,6 +177,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(EndColNode n) {
+			
 			n.value1.accept(this);
 			System.out.print("[");
 			n.value2.accept(this);
@@ -371,6 +372,9 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(InNode n) {
 			
+			
+			
+			
 			n.value.accept(this);
 			System.out.print(" in ");
 			n.term.accept(this);
@@ -554,6 +558,9 @@ public class ScopeVisitor implements Visitor {
 			n.exponent.accept(this);
 			System.out.print("^");
 			n.factor.accept(this);
+			if((typeHelp.isNum(n.exponent, currentScope) == false)|| typeHelp.isNum(n.factor, currentScope) == false){
+				Error.PrintError("in POWER expression", Error.Type.TYPE);
+			}
 			return null;
 		}
 	    
