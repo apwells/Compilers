@@ -190,12 +190,6 @@ public class VisitorAdapter implements Visitor{
 		n.term.accept(this);
 		n.value.accept(this);
 
-
-		//n.term.accept(this);
-		//n.value.accept(this);
-		n.term.accept(this);
-		n.value.accept(this);
-
 		// TODO Auto-generated method stub
 		return null;
 	}
