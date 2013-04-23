@@ -4,7 +4,7 @@ import symboltable.SymbolTable;
 
 public class TypeCheckHelper {
 	
-	public boolean isBool(TermNode term, SymbolTable currentScope) throws ClassCastException {
+	public boolean isBool(ExprNode term, SymbolTable currentScope) throws ClassCastException {
 		
 		BoolNode isBool = null;
 		AccessorNode isId = null;
@@ -114,6 +114,48 @@ public class TypeCheckHelper {
 		}
 		
 		return false;
+	}
+	
+	/*
+	 *  This method attempts to give the type of any given ExprNode... Should have made this first.
+	 *  REMEMBER : Could also be a function! So check for literals, Ids and Functions. (do for FuncCallStmt)
+	 */
+	public String getType (Node node, SymbolTable currentScope) {
+		/*
+		 *  Int, Float <= (numbers)
+		 *  String, Char
+		 *  String, Tuple, List
+		 *  boolean
+		 */
+		
+		StringLitNode stringLit = null;
+		IntNode intLit = null;
+		FloatNode floatLit = null;
+		BoolNode boolLit = null;
+		CharNode charLit = null;
+		TupleNode tupleLit = null;
+		ListNode listLit = null;
+		
+		AccessorNode accessor = null;
+		//String type = "";
+		
+		// One of these will return if we've sent a literal
+		try { stringLit = (StringLitNode) node; if (stringLit!=null) { return "string"; } } catch (ClassCastException e) {}
+		try { intLit = (IntNode) node; if (intLit!=null) { return "int"; } } catch (ClassCastException e) {}
+		try { floatLit = (FloatNode) node; if (floatLit!=null) { return "float"; } } catch (ClassCastException e) {}
+		try { boolLit = (BoolNode) node; if (boolLit!=null) { return "bool"; } } catch (ClassCastException e) {}
+		try { charLit = (CharNode) node; if (charLit!=null) { return "char"; } } catch (ClassCastException e) {}
+		try { tupleLit = (TupleNode) node; if (tupleLit!=null) { return "tuple"; } } catch (ClassCastException e) {}
+		try { listLit = (ListNode) node; if (listLit!=null) { return "list"; } } catch (ClassCastException e) {}
+		
+		// Now if it's an accessor or function
+		try { accessor = (AccessorNode) node; 
+		
+		
+		} catch (ClassCastException e) {}
+		
+		return "type not found";
+		
 	}
 	
 	public String getAccessorType (AccessorNode node, SymbolTable currentScope) {
