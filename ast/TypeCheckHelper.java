@@ -150,12 +150,19 @@ public class TypeCheckHelper {
 		
 		// Now if it's an accessor or function
 		try { accessor = (AccessorNode) node; 
-		
-		
+			TypeNode typeNode = (TypeNode) currentScope.getRecursive(accessor.getWholeName());
+			return typeNode.type;
 		} catch (ClassCastException e) {}
 		
 		return "type not found";
 		
+	}
+	
+	public boolean isChar(Node node, SymbolTable currentScope) {
+		if (getType(node, currentScope) == "char") {
+			return true;
+		}
+		return false;
 	}
 	
 	public String getAccessorType (AccessorNode node, SymbolTable currentScope) {
