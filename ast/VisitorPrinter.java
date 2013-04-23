@@ -1,6 +1,6 @@
 package ast;
 
-public class VisitorAdapter implements Visitor{
+public class VisitorPrinter implements Visitor{
 	
     
 	@Override

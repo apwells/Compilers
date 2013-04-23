@@ -59,7 +59,7 @@ public class QC2 {
                         if (root !=null) {
                             System.out.println("\nParsing completed\n\n");
                             
-                            VisitorAdapter simpleVisitor = new VisitorAdapter();
+                            VisitorPrinter simpleVisitor = new VisitorPrinter();
                             root.accept(simpleVisitor);
                             
                         } else
