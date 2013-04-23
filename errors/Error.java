@@ -9,10 +9,10 @@ public class Error {
 	public static void PrintError(String error, Type t){
 		switch (t) {
 		case DECLARED:
-			System.out.println("Variable " + error + " has already been declared");
+			System.out.println("Variable/Function " + error + " has already been declared");
 			break;
 		case NOTDECLARED:
-			System.out.println("Variable " + error + " has not been declared");
+			System.out.println("Variable/Function " + error + " has not been declared");
 			break;
 		case TYPE:
 			System.out.println("Incorrect type" + error);

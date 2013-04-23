@@ -203,7 +203,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(ExprTermNode n) {
-
+			
 			n.term.accept(this);
 			n.value.accept(this);
 
@@ -239,7 +239,7 @@ public class ScopeVisitor implements Visitor {
 				System.out.println("has been defined. Continuing happily");
 				n.params.accept(this);
 			} else {
-				Error.PrintError("Function " + n.id + " has not been defined before calling!");
+				Error.PrintError(n.id, Error.Type.NOTDECLARED);
 				n.params.accept(this);
 			}
 //			System.out.print(n.id);
@@ -263,9 +263,12 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(FuncDeclNode n) {
 			//System.out.print("fdef ");
-			System.out.println("Function definiton found. Checking symbol table...");
+			System.out.println("Function declaration found. Checking symbol table...");
 			if (currentScope.getRecursive(n.id) != null) {
-				
+				Error.PrintError(n.id, Error.Type.DECLARED);
+			} else {
+				System.out.println("Function has not been declared before. Saving and continuing happily");
+				currentScope.put(n.id, n);
 			}
 			//System.out.print(n.id);
 			currentScope = currentScope.beginScope();	// We make a new scope for the params
@@ -282,6 +285,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(GreatThEqNode n) {
+			
 			n.value.accept(this);
 			System.out.print(" >= ");
 			n.term.accept(this);
@@ -616,7 +620,7 @@ public class ScopeVisitor implements Visitor {
 			//System.out.print(" : ");
 			System.out.println("Checking variable scope for "+ n.id);
 			if (currentScope.get(n.id) != null) {
-				Error.VariableAlreadyDeclared(n.id);
+				Error.PrintError(n.id, Error.Type.DECLARED);
 				n.type.accept(this);
 			} else {
 				System.out.println("Saving new variable " + n.id + " to current scope in symbol table");
