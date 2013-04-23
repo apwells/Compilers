@@ -109,12 +109,36 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(ConcatNode n) {
 			
+			
+			
 			n.value.accept(this);
 			System.out.print("::");
 			
 			n.term.accept(this);
 			System.out.println(";");
 
+			if(typeHelp.getType(n.term, currentScope) != "string" 
+					&& typeHelp.getType(n.term, currentScope) != "tuple"
+					&& typeHelp.getType(n.term, currentScope) != "list"
+					){
+				Error.PrintError("in TERM of CONCAT expression", Error.Type.TYPE);
+			}
+			
+			if(typeHelp.getType(n.value, currentScope) != "string" 
+					&& typeHelp.getType(n.value, currentScope) != "tuple"
+					&& typeHelp.getType(n.value, currentScope) != "list"
+					){
+				Error.PrintError("in VALUE of CONCAT expression", Error.Type.TYPE);
+			}
+			
+			if(typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "bool" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "bool"
+					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "int" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "int"
+					||typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "float" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "float"
+					||typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "char" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "char"){
+				Error.PrintError(" - Invalid Input in CONCAT", Error.Type.TYPE);
+			}
+
+			
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -371,17 +395,36 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(InNode n) {
-			if((typeHelp.isBool(n.value, currentScope) == false) || typeHelp.isNum(n.value, currentScope) == false){
-				Error.PrintError("in MINUS expression", Error.Type.TYPE);
-			}
-			
-			
-			
-			
+
 			n.value.accept(this);
 			System.out.print(" in ");
 			n.term.accept(this);
 
+			if(typeHelp.isBool(n.value, currentScope) == false 
+					&& typeHelp.isNum(n.value, currentScope) == false
+					&& typeHelp.isChar(n.value, currentScope) == false
+					){
+				Error.PrintError("in VALUE of IN expression", Error.Type.TYPE);
+			}
+			if(typeHelp.getType(n.term, currentScope) != "string" 
+					&& typeHelp.getType(n.term, currentScope) != "tuple"
+					&& typeHelp.getType(n.term, currentScope) != "list"
+					){
+				Error.PrintError("in TERM of IN expression", Error.Type.TYPE);
+			}
+			if(typeHelp.getType(n.term, currentScope) != "list")
+				if((typeHelp.isBool(n.value, currentScope) == true && typeHelp.checkSequence((SequenceNode) n.term, currentScope) != "bool")
+						||(typeHelp.isInt(n.value, currentScope) == true && typeHelp.checkSequence((SequenceNode) n.term, currentScope) != "int")
+						||(typeHelp.isFloat(n.value, currentScope) == true && typeHelp.checkSequence((SequenceNode) n.term, currentScope) != "float")
+						||(typeHelp.isChar(n.value, currentScope) == true && typeHelp.checkSequence((SequenceNode) n.term, currentScope) != "char")){
+					Error.PrintError("- Value does not match term in IN expression", Error.Type.TYPE);
+				}
+			
+			if(typeHelp.getType(n.value, currentScope) == "string" && typeHelp.isChar(n.value, currentScope) != true){
+				Error.PrintError("String only takes characters in IN", Error.Type.TYPE);
+
+				
+			}
 			// TODO Auto-generated method stub
 			return null;
 		}
