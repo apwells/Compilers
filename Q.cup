@@ -289,6 +289,7 @@ expression:e	{:
 		 {//System.out.println("after here2"+e);
                    RESULT = new ExprListNode(e); 
 		}:}
+<<<<<<< HEAD
 |
 =======
 {:         if(e!=null){if(elist!=null){
@@ -304,6 +305,9 @@ expression:e	{:
                    if(e!=null)RESULT = new ExprListNode(e); 
 		:}
 >>>>>>> aha
+=======
+| {:RESULT = new ExprListNode(new ArrayList<ExprNode>());:}
+>>>>>>> work cup
 ;
 
 
