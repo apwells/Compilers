@@ -53,6 +53,7 @@ CharLiteral = "'"."'"
 "float"				{return h.sym(sym.FLOAT); }
 "string"			{return h.sym(sym.STRING); }
 "list"				{return h.sym(sym.LIST); }
+"tuple"				{return h.sym(sym.TUPLE);}
 "void"				{return h.sym(sym.VOID);}
 
 // Declarations
