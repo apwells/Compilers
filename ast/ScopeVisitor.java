@@ -57,6 +57,17 @@ public class ScopeVisitor implements Visitor {
 			System.out.print("[:");
 			n.value2.accept(this);
 			System.out.print("]");
+			
+			if(typeHelp.getType(n.value1, currentScope) != "string" 
+					&& typeHelp.getType(n.value1, currentScope) != "tuple"
+					&& typeHelp.getType(n.value1, currentScope) != "list"
+					){
+				Error.PrintError("in VALUE1 of BEGCOL expression", Error.Type.TYPE);
+			}
+			if(typeHelp.getType(n.value2, currentScope) != "int") {
+				Error.PrintError("in VALUE2 of BEGCOL expression", Error.Type.TYPE);
+				
+			}
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -206,6 +217,17 @@ public class ScopeVisitor implements Visitor {
 			System.out.print("[");
 			n.value2.accept(this);
 			System.out.print(":]");
+			
+			if(typeHelp.getType(n.value1, currentScope) != "string" 
+					&& typeHelp.getType(n.value1, currentScope) != "tuple"
+					&& typeHelp.getType(n.value1, currentScope) != "list"
+					){
+				Error.PrintError("in VALUE1 of ENDCOL expression", Error.Type.TYPE);
+			}
+			if(typeHelp.getType(n.value1, currentScope) != "int") {
+				Error.PrintError("in VALUE2 of ENDCOL expression", Error.Type.TYPE);
+				
+			}
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -525,6 +547,19 @@ public class ScopeVisitor implements Visitor {
 			System.out.print("(");
 			n.value2.accept(this);
 			System.out.print(")");
+			
+			if(typeHelp.getType(n.value1, currentScope) != "string" 
+					&& typeHelp.getType(n.value1, currentScope) != "tuple"
+					&& typeHelp.getType(n.value1, currentScope) != "list"
+					){
+				Error.PrintError("in VALUE1 of NOCOL expression", Error.Type.TYPE);
+			}
+			if(typeHelp.getType(n.value2, currentScope) != "int") {
+				Error.PrintError("in VALUE2 of NOCOL expression", Error.Type.TYPE);
+				
+			}
+
+			
 
 
 			// TODO Auto-generated method stub
@@ -559,6 +594,11 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(NotExprNode n) {
 			System.out.print(" ! ");
 			n.value.accept(this);
+			
+			if(typeHelp.isBool(n.value, currentScope) == false) {
+				Error.PrintError("in VALUE of NOTEXPR expression", Error.Type.TYPE);
+				
+			}
 
 			// TODO Auto-generated method stub
 			return null;
@@ -699,6 +739,21 @@ public class ScopeVisitor implements Visitor {
 			System.out.print(" : ");
 			n.value3.accept(this);
 			System.out.print(")");
+			
+			if(typeHelp.getType(n.value1, currentScope) != "string" 
+					&& typeHelp.getType(n.value1, currentScope) != "tuple"
+					&& typeHelp.getType(n.value1, currentScope) != "list"
+					){
+				Error.PrintError("in VALUE1 of THREEEXPRNODE expression", Error.Type.TYPE);
+			}
+			if(typeHelp.getType(n.value2, currentScope) != "int") {
+				Error.PrintError("in VALUE2 of THREEEXPRNODE expression", Error.Type.TYPE);
+				
+			}
+			if(typeHelp.getType(n.value3, currentScope) != "int") {
+				Error.PrintError("in VALUE3 of THREEEXPRNODE expression", Error.Type.TYPE);
+				
+			}
 
 			// TODO Auto-generated method stub
 			return null;

@@ -20,9 +20,7 @@ public class Error {
 		}
 	}
 	
-	public static void PrintError(Type t){
-		System.out.println("Incorrect type");
-	}
+
 	
 	/*
 	 * 	Scope Errors
