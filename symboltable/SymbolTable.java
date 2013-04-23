@@ -51,5 +51,9 @@ public class SymbolTable {
 		// Restore last table (does that mean it exits nested scope to return to parent scope?)
 		return parent;
 	}
+	
+	public SymbolTable getParent() {
+		return parent;
+	}
 
 }

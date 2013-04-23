@@ -8,26 +8,39 @@ public class ScopeVisitor implements Visitor {
 	
 	private SymbolTable rootTable;
 	private SymbolTable currentScope;
+	private TypeCheckHelper typeHelp;
 	
 	public ScopeVisitor(){
 		rootTable = new SymbolTable();
+		typeHelp = new TypeCheckHelper();
 		currentScope = rootTable;
 	}
 	
-    
-		
 	    
 		@Override
 		public Object visit(AccessorNode n) {
+			
+			String wholeName = "";
+			int i = 1;
+			
 			for (String id : n.ids) {
-				
-				if (currentScope.getRecursive(id) == null) {
-					Error.PrintError(id, Error.Type.NOTDECLARED);
+				if (i ==1) {
+					wholeName = wholeName + id;
+				} else {
+					wholeName = wholeName +"."+ id;
 				}
-				System.out.print(id);
-				//System.out.print("*");
-				
+				i++;
 			}
+			
+			//System.out.println("********  " + wholeName + "  *****");
+			
+				
+				if (currentScope.getRecursive(wholeName) == null) {
+					Error.PrintError(wholeName, Error.Type.NOTDECLARED);
+				}
+				System.out.print(wholeName);
+
+				
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -286,6 +299,10 @@ public class ScopeVisitor implements Visitor {
 			currentScope = currentScope.endScope();
 			// TODO Auto-generated method stub
 			return null;
+			
+			
+			
+			
 		}
 	    
 		@Override
@@ -493,6 +510,7 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(ReturnStmtNode n) {
 			System.out.print("return ");
 			n.value.accept(this);
+			
 			System.out.println(" ; ");
 
 
@@ -611,9 +629,15 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(AndNode n) {
+			
+			
+			
 			n.term.accept(this);
+			System.out.println("AndNode :: "+n.term.toString());
+			typeHelp.checkForBool(n.term, currentScope);
 			System.out.print(" && ");
 			n.factor.accept(this);
+			typeHelp.checkForBool(n.factor, currentScope);
 
 			// TODO Auto-generated method stub
 			return null;
