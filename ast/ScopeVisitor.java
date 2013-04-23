@@ -162,6 +162,9 @@ public class ScopeVisitor implements Visitor {
 			n.term.accept(this);
 			System.out.print(" / ");
 			n.factor.accept(this);
+			if((typeHelp.isNum(n.term, currentScope) == false)|| typeHelp.isNum(n.factor, currentScope) == false){
+				Error.PrintError("in DIVIDE expression", Error.Type.TYPE);
+			}
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -302,9 +305,19 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(GreatThEqNode n) {
 			
+			
+			if((typeHelp.isNum(n.term, currentScope) == false)
+					|| (typeHelp.isChar(n.term, currentScope) == false)
+					|| (typeHelp.isNum(n.value, currentScope) == false)
+					|| (typeHelp.isChar(n.value, currentScope) == false)
+{
+				Error.PrintError("in AND expression", Error.Type.TYPE);
+			}
+			
 			n.value.accept(this);
 			System.out.print(" >= ");
 			n.term.accept(this);
+			
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -338,6 +351,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(InNode n) {
+			
 			n.value.accept(this);
 			System.out.print(" in ");
 			n.term.accept(this);
@@ -398,6 +412,10 @@ public class ScopeVisitor implements Visitor {
 			n.value.accept(this);
 			System.out.print(" - ");
 			n.term.accept(this);
+			
+			if((typeHelp.isNum(n.term, currentScope) == false)|| typeHelp.isNum(n.value, currentScope) == false){
+				Error.PrintError("in MINUS expression", Error.Type.TYPE);
+			}
 
 			// TODO Auto-generated method stub
 			return null;
@@ -408,6 +426,9 @@ public class ScopeVisitor implements Visitor {
 			n.term.accept(this);
 			System.out.print(" * ");
 			n.factor.accept(this);
+			if((typeHelp.isNum(n.term, currentScope) == false)|| typeHelp.isNum(n.factor, currentScope) == false){
+				Error.PrintError("in MULTIPLY expression", Error.Type.TYPE);
+			}
 			return null;
 		}
 	    
@@ -453,6 +474,9 @@ public class ScopeVisitor implements Visitor {
 			n.value.accept(this);
 			System.out.print(" || ");
 			n.term.accept(this);
+			if((typeHelp.isBool(n.term, currentScope) == false)|| typeHelp.isBool(n.value, currentScope) == false){
+				Error.PrintError("in OR expression", Error.Type.TYPE);
+			}
 
 			// TODO Auto-generated method stub
 			return null;
@@ -470,9 +494,13 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(PlusNode n) {
+			
 			n.value.accept(this);
 			System.out.print(" + ");
 			n.term.accept(this);
+			if((typeHelp.isNum(n.term, currentScope) == false)|| typeHelp.isNum(n.value, currentScope) == false){
+				Error.PrintError("in Plus expression", Error.Type.TYPE);
+			}
 			return null;
 		}
 	    
@@ -628,10 +656,13 @@ public class ScopeVisitor implements Visitor {
 			
 			n.term.accept(this);
 			System.out.println("AndNode :: "+n.term.toString());
-			typeHelp.isBool(n.term, currentScope);
+
 			System.out.print(" && ");
 			n.factor.accept(this);
-			typeHelp.isBool(n.factor, currentScope);
+			
+			if((typeHelp.isBool(n.term, currentScope) == false)|| typeHelp.isBool(n.factor, currentScope) == false){
+				Error.PrintError("in AND expression", Error.Type.TYPE);
+			}
 
 			// TODO Auto-generated method stub
 			return null;

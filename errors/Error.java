@@ -18,7 +18,10 @@ public class Error {
 			System.out.println("Incorrect type" + error);
 			break;
 		}
-		
+	}
+	
+	public static void PrintError(Type t){
+		System.out.println("Incorrect type");
 	}
 	
 	/*
