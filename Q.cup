@@ -263,6 +263,7 @@ list ::=
 LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist); :}
 ;
 
+// Null Pointer Exceptions going on here. Because elist is never initialized i believe...
 expression_clist ::= 
 expression_clist:elist COMMA expression:e
 {:         System.out.println("after here"+e);

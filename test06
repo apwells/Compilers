@@ -16,7 +16,8 @@ s1 : int = sum(-30,40);
   s1 : int = sum(-10,20);
   s2 : float = sum(10.0,-20.0);
   s2 : float = sum(10.0,-20.0);
-  b : bool = True;
+//  b : bool = True;
+  b  : bool = true;	// This had me stumped. true should not have a capital T!!
 
   if (s1 < s2 || s1 == s2) {
      b  =  s1 + s2 / (s1 + s2) >= 30;

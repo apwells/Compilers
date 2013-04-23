@@ -21,8 +21,11 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(AccessorNode n) {
 			for (String id : n.ids) {
 				
+				if (currentScope.getRecursive(id) == null) {
+					Error.PrintError(id, Error.Type.NOTDECLARED);
+				}
 				System.out.print(id);
-				
+				//System.out.print("*");
 				
 			}
 			// TODO Auto-generated method stub
@@ -80,7 +83,8 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(BoolNode n) {
-			n.accept(this);
+			//System.out.print("%%%BOOL%%%");
+			// n.accept(this);
 			System.out.print(n.value);
 			// TODO Auto-generated method stub
 			return null;
@@ -88,7 +92,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(CharNode n) {
-			n.accept(this);
+			// n.accept(this);
 			System.out.print(n.value);
 			// TODO Auto-generated method stub
 			return null;
@@ -339,6 +343,7 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(LengthNode n) {
+			// TODO : Should we relaly be accepting these ones? Or will it form a stackoverflow/inf loop?
 			System.out.print("len ");
 			System.out.print("(");
 			n.value.accept(this);
@@ -582,7 +587,7 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(VarDeclNode n) {
 			n.id.accept(this);
 			System.out.print(" = ");
-			n.declarations.accept(this);
+			//n.declarations.accept(this);
 			
 			// TODO Auto-generated method stub
 			return null;
@@ -625,6 +630,7 @@ public class ScopeVisitor implements Visitor {
 			} else {
 				System.out.println("Saving new variable " + n.id + " to current scope in symbol table");
 				currentScope.put(n.id, n);
+				//n.type.accept(this);
 			}
 			
 			
