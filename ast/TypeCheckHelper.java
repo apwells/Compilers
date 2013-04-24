@@ -35,7 +35,7 @@ public class TypeCheckHelper {
 	}
 	
 	public boolean isNum(Node node, SymbolTable currentScope) {
-		if (isInt(node, currentScope) || isFloat(node, currentScope)) {
+		if (getType(node, currentScope) == "int" ||  getType(node, currentScope) == "float"){
 			return true;
 		}
 		return false;
@@ -87,7 +87,7 @@ public class TypeCheckHelper {
 		try { accessor = (AccessorNode) node; 
 			VarTypeNode typeNode = (VarTypeNode) currentScope.getRecursive(accessor.getWholeName());
 			//System.out.println(" *** Type is " + typeNode.type.type + " *** ");
-			return typeNode.type.type;
+		if (typeNode != null) {	return typeNode.type.type; }
 		} catch (ClassCastException e) { 
 			//System.out.println (" EXCEPTION !! " + e);
 		}
