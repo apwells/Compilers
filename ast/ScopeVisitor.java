@@ -383,9 +383,22 @@ public class ScopeVisitor implements Visitor {
 			} else {
 				System.out.println("Function has not been declared before. Saving and continuing happily");
 				currentScope.put(n.id, n);
+				
+
+				
 			}
 			//System.out.print(n.id);
 			currentScope = currentScope.beginScope();	// We make a new scope for the params
+			
+			for (VarTypeNode param : n.params.params) {
+				if (currentScope.getRecursive(param.id) != null) {
+					Error.PrintError(param.id, Error.Type.DECLARED);
+				} else {
+					System.out.println("Saving param");
+					currentScope.put(param.id, param.type);
+				}
+			}
+			
 			//System.out.print("(");
 			n.params.accept(this);
 			//System.out.print(")");
@@ -856,7 +869,7 @@ public class ScopeVisitor implements Visitor {
 				Error.PrintError(n.id.id, Error.Type.DECLARED);
 				n.id.accept(this);
 			} else {
-				//System.out.println("Saving new variable " + n.id.id + " to current scope in symbol table as " + n.toString());
+				System.out.println("Saving new variable " + n.id.id + " to current scope in symbol table as " + n.toString());
 				currentScope.put(n.id.id, n);
 				
 			}
