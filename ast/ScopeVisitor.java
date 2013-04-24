@@ -155,6 +155,7 @@ public class ScopeVisitor implements Visitor {
 			if (typeHelp.getType(n.term, currentScope) == "list") {
 				
 				if (typeHelp.isAccessor(n.value, currentScope)) {
+					try {
 					//System.out.println("8888888888888888");
 					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
 					AccessorNode access = (AccessorNode) n.value;
@@ -163,6 +164,7 @@ public class ScopeVisitor implements Visitor {
 					//System.out.println("------- ----- --- seq is "+seq.toString());
 					// Store list type
 					list1Type = typeHelp.checkSequence(seq, currentScope);
+					} catch (Exception e) {}
 				}
 			}
 			//System.out.println(" --- ---- -- - - TYPE IS  " + typeHelp.getType(n.term, currentScope));
@@ -171,12 +173,16 @@ public class ScopeVisitor implements Visitor {
 				
 				if (typeHelp.isAccessor(n.term, currentScope)) {
 					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
+					try {
 					AccessorNode access = (AccessorNode) n.term;
 					VarDeclNode varDecl = (VarDeclNode) currentScope.getRecursive(access.getWholeName());
 					SequenceNode seq = (SequenceNode) varDecl.declarations.expressions.get(0);
 					//System.out.println("------- ----- --- seq is "+seq.toString());
 					// Store list type
 					list2Type = typeHelp.checkSequence(seq, currentScope);
+					} catch (Exception e) {
+						
+					}
 				}
 			}
 			
