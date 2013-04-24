@@ -244,7 +244,7 @@ public class ScopeVisitor implements Visitor {
 			
 			if (termType != valueType) {
 				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
-					if (!typeHelp.isPrimitive(termType)) {
+					if (!typeHelp.isPrimitive(termType) && !typeHelp.isPrimitive(valueType)) {
 						Error.PrintError("in EQUAL expression!!!", Error.Type.TYPE);
 					}
 				}
