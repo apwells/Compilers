@@ -298,7 +298,7 @@ public class VisitorPrinter implements Visitor{
     
 	@Override
 	public Object visit(IntNode n) {
-		System.out.print(n.value);
+		System.out.print(n.value+"at line and col"+n.line+"|"+n.column);
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,6 +3,22 @@ import ast.*;
 import java.util.*;
 import java.lang.*;
 
+parser code {:
+    
+    public void report_error(String message, Object info) {
+   
+               if (info instanceof java_cup.runtime.Symbol) {
+                        java_cup.runtime.Symbol current = ((java_cup.runtime.Symbol) info);
+               System.out.println("Parse error at line: "+(current.left+1)+" column: "+(current.right+1));                
+               
+            }
+    }
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+:};
+
 terminal SEMICOLON, COMMA, DOT, COLON;
 terminal LEFTBRACE, RIGHTBRACE;
 terminal LEFTBRACKET, RIGHTBRACKET;
@@ -70,19 +86,19 @@ precedence nonassoc LESSTHAN, LESSTHANEQUAL, GREATERTHAN, GREATERTHANEQUAL, EQUA
 
 start with program;
 
-type ::= BOOL {: RESULT = new TypeNode("bool");:}
-	| INT {: RESULT = new TypeNode("int");:}
-	| FLOAT {: RESULT = new TypeNode("float");:}
-	| STRING {: RESULT = new TypeNode("string");:}
-	| CHAR {: RESULT = new TypeNode("char");:}
-	| LIST {: RESULT = new TypeNode("list");:}
-	| TUPLE {: RESULT = new TypeNode("tuple");:}
-	| ID {: RESULT = new TypeNode("id");:}
+type ::= BOOL:t {: RESULT = new TypeNode("bool");RESULT.setup(tleft,tright);:}
+	| INT:t {: RESULT = new TypeNode("int");RESULT.setup(tleft,tright);:}
+	| FLOAT:t {: RESULT = new TypeNode("float");RESULT.setup(tleft,tright);:}
+	| STRING:t {: RESULT = new TypeNode("string");RESULT.setup(tleft,tright);:}
+	| CHAR:t {: RESULT = new TypeNode("char");RESULT.setup(tleft,tright);:}
+	| LIST:t {: RESULT = new TypeNode("list");RESULT.setup(tleft,tright);:}
+	| TUPLE:t {: RESULT = new TypeNode("tuple");RESULT.setup(tleft,tright);:}
+	| ID:t {: RESULT = new TypeNode("id");RESULT.setup(tleft,tright);:}
 ;
 
 program ::= 
-global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);System.out.println("Parsing Complete"); :}\
-| block:blk {: new ProgramNode(blk,null);System.out.println("Parsing Complete"); :}
+global_decl_list:glbdecl block:blk {: RESULT = new ProgramNode(blk,glbdecl);System.out.println("Parsing Complete");RESULT.setup(glbdeclleft,glbdeclright); :}
+| block:blk {: RESULT=new ProgramNode(blk,null);RESULT.setup(blkleft,blkright);System.out.println("Parsing Complete"); :}
 | error  {:System.out.print("Error\n");:}
 ;
 
@@ -91,16 +107,19 @@ global_decl_list:declist global_decl:v
 {: if (declist != null) {
                        declist.declarations.add(v);
                        RESULT = declist;
+                       RESULT.setup(vleft,vright);
                        
                    } else {
                        
                        RESULT = new DeclListNode(v);
+                       RESULT.setup(vleft,vright);
                    }
                 :}
 
 | global_decl:v
 {:
                        RESULT = new DeclListNode(v);
+                       RESULT.setup(vleft,vright);
                    :}
 ;
 
@@ -111,15 +130,15 @@ datatype_decl:datadecl 		{: RESULT = datadecl;:}
 ;
 
 function_decl ::= 
-FDEF ID:id LEFTPAREN parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclNode(paramlist,id,ftype,blk);:}
+FDEF ID:id LEFTPAREN parameter_clist:paramlist RIGHTPAREN COLON function_type:ftype block:blk	{: RESULT = new FuncDeclNode(paramlist,id,ftype,blk);RESULT.setup(idleft,idright);:}
 ;
 
 var_type ::= 
-ID:id COLON type:tp 	{: RESULT = new VarTypeNode(tp,id);:}
+ID:id COLON type:tp 	{: RESULT = new VarTypeNode(tp,id);RESULT.setup(idleft,idright);:}
 ; 
 
 var_decl ::= 
-var_type:vtype var_init:vinit SEMICOLON {: RESULT = new VarDeclNode(vinit,vtype);:}
+var_type:vtype var_init:vinit SEMICOLON {: RESULT = new VarDeclNode(vinit,vtype);RESULT.setup(vtypeleft,vtyperight);:}
 ;
 
 var_init ::=
@@ -130,11 +149,12 @@ ASSIGN expression_clist:elist	{: RESULT = elist;:}
 datatype_decl ::=
 TDEF ID:id COLON parameter_clist:parlist SEMICOLON	{: 
 	//System.out.println("CUP: Tdef found");
-	RESULT = new DatatypeNode(parlist,id);:}
+	RESULT = new DatatypeNode(parlist,id);
+	RESULT.setup(idleft,idright);:}
 ;
 
 function_type ::=
-VOID 		{: RESULT = new TypeNode("void");:}
+VOID:v 		{: RESULT = new TypeNode("void");RESULT.setup(vleft,vright);:}
 | type:t 	{: RESULT = t;:}
 ;
 
@@ -144,11 +164,13 @@ var_type:v parameter_clist2:parlist
 {: if (parlist != null) {
                        parlist.params.add(v);
                        RESULT = new ParamListNode(parlist.params);
+                       RESULT.setup(vleft,vright);
                        
                    } else {
                        ArrayList<VarTypeNode> res = new ArrayList<VarTypeNode>();
                        res.add(v);
                        RESULT = new ParamListNode(res);
+                       RESULT.setup(vleft,vright);
                    }
                 :}
 | {: RESULT= null;:};
@@ -158,18 +180,20 @@ COMMA var_type:v parameter_clist2:parlist
 {: if (parlist != null) {
                        parlist.params.add(v);
                        RESULT = new ParamListNode(parlist.params);
+                      RESULT.setup(vleft,vright);
                        
                    } else {
                        ArrayList<VarTypeNode> res = new ArrayList<VarTypeNode>();
                        res.add(v);
                        RESULT = new ParamListNode(res);
+                       RESULT.setup(vleft,vright);
                    }
                 :}
 | {: RESULT = null;:};
 
 block ::= 
-LEFTBRACE local_decl_list:declist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);:}
-| LEFTBRACE statement_list:stlist RIGHTBRACE					{: RESULT = new BlockNode(stlist,null);:}
+LEFTBRACE local_decl_list:declist statement_list:stlist RIGHTBRACE {: RESULT = new BlockNode(stlist,declist);RESULT.setup(declistleft,declistright);:}
+| LEFTBRACE statement_list:stlist RIGHTBRACE					{: RESULT = new BlockNode(stlist,null);RESULT.setup(stlistleft,stlistright);:}
 ;
 
 // Local x only allows variable declarations
@@ -178,16 +202,19 @@ local_decl_list:declist var_decl:v
 {: if (declist != null) {
                        declist.declarations.add(v);
                        RESULT = declist;
+                       RESULT.setup(declistleft,declistright);
                        
                    } else {
                        
                        RESULT = new DeclListNode(v);
+                       RESULT.setup(vleft,vright);
                    }
                 :}
 
 | var_decl:v
 {:
                        RESULT = new DeclListNode(v);
+                       RESULT.setup(vleft,vright);
                    :}
 ;
 
@@ -196,18 +223,20 @@ statement:s statement_list:stlist
 {: if (stlist != null) {
                        stlist.statements.add(s);
                        RESULT = new StatementListNode(stlist.statements);
+                       RESULT.setup(sleft,sright);
                       
                    } else {
                        ArrayList<StmtNode> res = new ArrayList<StmtNode>();
                        res.add(s);
                        RESULT = new StatementListNode(res);
+                       RESULT.setup(sleft,sright);
                    }
                 :}
 |{:RESULT = new StatementListNode(new ArrayList<StmtNode>());:};
 
 statement ::= 
 assignment:ass		{: RESULT = ass;:}
-| function_call:func SEMICOLON	{: RESULT = new FuncCallStmtNode(func);:}	
+| function_call:func SEMICOLON	{: RESULT = new FuncCallStmtNode(func);RESULT.setup(funcleft,funcright);:}	
 | ifelse:ifel		{: RESULT = ifel;:}
 | while:whi		{: RESULT = whi;:}
 | repeatuntil:rptuntil	{: RESULT = rptuntil;:}
@@ -215,34 +244,34 @@ assignment:ass		{: RESULT = ass;:}
 ;
 
 ifelse ::= 
-IF LEFTPAREN expression:e RIGHTPAREN LEFTBRACE statement_list:stlist1 RIGHTBRACE ELSE LEFTBRACE statement_list:stlist2 RIGHTBRACE	{: RESULT = new IfElseNode(e,stlist1,stlist2);:}
+IF LEFTPAREN expression:e RIGHTPAREN LEFTBRACE statement_list:stlist1 RIGHTBRACE ELSE LEFTBRACE statement_list:stlist2 RIGHTBRACE	{: RESULT = new IfElseNode(e,stlist1,stlist2);RESULT.setup(eleft,eright);:}
 ;
 
 while ::=
-WHILE LEFTPAREN expression:e RIGHTPAREN DO LEFTBRACE statement_list:stlist RIGHTBRACE	{: RESULT = new WhileStmtNode(e,stlist);:}
+WHILE LEFTPAREN expression:e RIGHTPAREN DO LEFTBRACE statement_list:stlist RIGHTBRACE	{: RESULT = new WhileStmtNode(e,stlist);RESULT.setup(eleft,eright);:}
 ;
 
 repeatuntil ::= 
-REPEAT LEFTBRACE statement_list:stlist RIGHTBRACE UNTIL LEFTPAREN expression:e RIGHTPAREN SEMICOLON		{: RESULT = new RptUntilNode(e,stlist);:}
+REPEAT LEFTBRACE statement_list:stlist RIGHTBRACE UNTIL LEFTPAREN expression:e RIGHTPAREN SEMICOLON		{: RESULT = new RptUntilNode(e,stlist);RESULT.setup(stlistleft,stlistright);:}
 ;
 
 function_call ::=
-ID:id LEFTPAREN expression_clist:elist RIGHTPAREN	{: RESULT = new FuncCallNode(elist,id);:}
+ID:id LEFTPAREN expression_clist:elist RIGHTPAREN	{: RESULT = new FuncCallNode(elist,id);RESULT.setup(elistleft,elistright);:}
 ;
 
 return ::= 
-RETURN expression:e SEMICOLON 	{: RESULT = new ReturnStmtNode(e);:}
+RETURN expression:e SEMICOLON 	{: RESULT = new ReturnStmtNode(e);RESULT.setup(eleft,eright);:}
 | RETURN SEMICOLON		{: RESULT = new ReturnStmtNode(null);:}
 ;
 
 assignment ::= 
-accessor:acc ASSIGN expression:e SEMICOLON	{: RESULT = new AssignNode(e,acc);:}
+accessor:acc ASSIGN expression:e SEMICOLON	{: RESULT = new AssignNode(e,acc);RESULT.setup(accleft,accright);:}
 ;
 
 sequence ::=
 STRINGLITERAL:s		{: 
 					//System.out.println("Found a string liter : " + s);
-					RESULT = new StringLitNode(s);
+					RESULT = new StringLitNode(s);RESULT.setup(sleft,sright);
 					:}
 | tuple	:tup		{: RESULT = tup;:}
 | list:lis		{: RESULT = lis;:}
@@ -250,23 +279,23 @@ STRINGLITERAL:s		{:
 
 accessor ::=
 ID:d {: 
-                   RESULT = new AccessorNode(d); :}
+                   RESULT = new AccessorNode(d);RESULT.setup(dleft,dright); :}
 | accessor:acc DOT ID:d {:if(acc !=null) {
 		acc.ids.add(d);
 		RESULT = acc;
 		}
 		else
 		{
-                   RESULT = new AccessorNode(d);}
+                   RESULT = new AccessorNode(d);RESULT.setup(dleft,dright);}
 :}
 ;
 
 tuple ::=
-LEFTTBRACKET expression_clist:elist RIGHTTBRACKET		{: RESULT = new TupleNode(elist); :}
+LEFTTBRACKET expression_clist:elist RIGHTTBRACKET		{: RESULT = new TupleNode(elist);RESULT.setup(elistleft,elistright); :}
 ;
 
 list ::= 
-LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist); :}
+LEFTBRACKET expression_clist:elist RIGHTBRACKET 		{: RESULT = new ListNode(elist);RESULT.setup(elistleft,elistright); :}
 ;
 
 // Null Pointer Exceptions going on here. Because elist is never initialized i believe...
@@ -286,7 +315,7 @@ expression_clist:elist COMMA expression:e
 expression:e	{: 
 		if(e!=null)	
 		 {//System.out.println("after here2"+e);
-                   RESULT = new ExprListNode(e); 
+                   RESULT = new ExprListNode(e);RESULT.setup(eleft,eright); 
 		}:}
 | {:RESULT= new ExprListNode(null);:}
 ;
@@ -295,34 +324,34 @@ expression:e	{:
 
 expression ::=
 term:t				{: RESULT = t; :}
-| NOT expression:e		{: RESULT = new NotExprNode(e); :}
-| expression:e PLUS term:t		{: RESULT = new PlusNode(e,t); :}
-| expression:e MINUS term:t	{: RESULT = new MinusNode(e,t); :}
-| expression:e OR term:t	{: RESULT = new OrNode(e,t); :}
-| expression:e IN term:t	{: RESULT = new InNode(e,t); :}
-| expression:e LESSTHAN term:t		{: RESULT = new LessThNode(e,t); :}
-| expression:e LESSTHANEQUAL term:t	{: RESULT = new LessThEqNode(e,t); :}
-| expression:e GREATERTHAN term:t		{: RESULT = new GreatThNode(e,t); :}
-| expression:e GREATERTHANEQUAL term:t	{: RESULT = new GreatThEqNode(e,t); :}
-| expression:e EQUAL term:t		{: RESULT = new EqNode(e,t); :}
-| expression:e NOTEQUAL term:t		{: RESULT = new NotEqNode(e,t); :}
-| expression:e CONCAT term:t		{: RESULT = new ConcatNode(e,t); :}
-| expression:e1 LEFTBRACKET expression:e2 COLON expression:e3 RIGHTBRACKET	{: RESULT = new ThreeExprNode(e1,e2,e3); :}
-| expression:e1 LEFTBRACKET expression:e2 COLON RIGHTBRACKET		{: RESULT = new EndColNode(e1,e2); :}
-| expression:e1 LEFTBRACKET COLON expression:e2 RIGHTBRACKET		{: RESULT = new BegColNode(e1,e2); :}
-| expression:e1 LEFTBRACKET expression:e2 RIGHTBRACKET		{: RESULT = new NoColNode(e1,e2); :}
+| NOT expression:e		{: RESULT = new NotExprNode(e);RESULT.setup(eleft,eright); :}
+| expression:e PLUS term:t		{: RESULT = new PlusNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e MINUS term:t	{: RESULT = new MinusNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e OR term:t	{: RESULT = new OrNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e IN term:t	{: RESULT = new InNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e LESSTHAN term:t		{: RESULT = new LessThNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e LESSTHANEQUAL term:t	{: RESULT = new LessThEqNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e GREATERTHAN term:t		{: RESULT = new GreatThNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e GREATERTHANEQUAL term:t	{: RESULT = new GreatThEqNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e EQUAL term:t		{: RESULT = new EqNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e NOTEQUAL term:t		{: RESULT = new NotEqNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e CONCAT term:t		{: RESULT = new ConcatNode(e,t);RESULT.setup(eleft,eright); :}
+| expression:e1 LEFTBRACKET expression:e2 COLON expression:e3 RIGHTBRACKET	{: RESULT = new ThreeExprNode(e1,e2,e3);RESULT.setup(e1left,e1right); :}
+| expression:e1 LEFTBRACKET expression:e2 COLON RIGHTBRACKET		{: RESULT = new EndColNode(e1,e2);RESULT.setup(e1left,e1right); :}
+| expression:e1 LEFTBRACKET COLON expression:e2 RIGHTBRACKET		{: RESULT = new BegColNode(e1,e2);RESULT.setup(e1left,e1right); :}
+| expression:e1 LEFTBRACKET expression:e2 RIGHTBRACKET		{: RESULT = new NoColNode(e1,e2);RESULT.setup(e1left,e1right); :}
 ;
 
 term ::=
 factor:fac		{: RESULT = fac; :}
-| term:trm MULTIPLY factor:fac		{: RESULT = new MultiplyNode(trm,fac); :}
-| term:trm DIVIDE factor:fac		{: RESULT = new DivideNode(trm,fac); :}	
-| term:trm POWER factor:fac		{: RESULT = new PowerTermNode(trm,fac); :}
-| term:trm AND factor:fac		{: RESULT = new AndNode(trm,fac); :}
+| term:trm MULTIPLY factor:fac		{: RESULT = new MultiplyNode(trm,fac);RESULT.setup(trmleft,trmright); :}
+| term:trm DIVIDE factor:fac		{: RESULT = new DivideNode(trm,fac);RESULT.setup(trmleft,trmright); :}	
+| term:trm POWER factor:fac		{: RESULT = new PowerTermNode(trm,fac);RESULT.setup(trmleft,trmright); :}
+| term:trm AND factor:fac		{: RESULT = new AndNode(trm,fac);RESULT.setup(trmleft,trmright); :}
 ;
 
 factor ::=
-exponent:exp POWER factor:fac	{: RESULT = new PowerNode(exp,fac); :}
+exponent:exp POWER factor:fac	{: RESULT = new PowerNode(exp,fac);RESULT.setup(facleft,facright); :}
 | exponent:exp	{: RESULT = exp ;:}
 ;
 
@@ -335,16 +364,16 @@ MINUS exponent:exp {: RESULT = new MinExponentNode(exp); :}
 
 final ::=
 accessor:acc	{: RESULT = acc; :}
-| LEFTPAREN expression:e RIGHTPAREN  {: RESULT = new BrkExprNode(e); :}
-| INTLITERAL:val	{: RESULT = new IntNode(val); :}
-| FLOATLITERAL:val	{: RESULT = new FloatNode(val); :}
-| BOOLLITERAL:val	{: RESULT = new BoolNode(val); :}
-| CHARLITERAL:val	{: RESULT = new CharNode(val); :}
+| LEFTPAREN expression:e RIGHTPAREN  {: RESULT = new BrkExprNode(e);RESULT.setup(eleft,eright); :}
+| INTLITERAL:val	{: RESULT = new IntNode(val);RESULT.setup(valleft,valright); :}
+| FLOATLITERAL:val	{: RESULT = new FloatNode(val);RESULT.setup(valleft,valright); :}
+| BOOLLITERAL:val	{: RESULT = new BoolNode(val);RESULT.setup(valleft,valright); :}
+| CHARLITERAL:val	{: RESULT = new CharNode(val);RESULT.setup(valleft,valright); :}
 | function_call:func	{: RESULT = func;:}
-| LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e); :}
+| LENGTH LEFTPAREN expression:e RIGHTPAREN	{: RESULT = new LengthNode(e);RESULT.setup(eleft,eright); :}
 //| sequence:seq // This includes STRINGLITERAL		{: RESULT = seq;:}
 // Dirty fix. Endless error when i use the line above instead. Absolute mystery why...?!
-| STRINGLITERAL:s   {: RESULT = new StringLitNode(s); :}
+| STRINGLITERAL:s   {: RESULT = new StringLitNode(s);RESULT.setup(sleft,sright); :}
 | tuple	:tup		{: RESULT = tup;:}
 | list:lis		{: RESULT = lis;:}
 ;

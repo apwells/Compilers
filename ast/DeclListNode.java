@@ -2,7 +2,7 @@ package ast;
 
 import java.util.*;
 
-public class DeclListNode {
+public class DeclListNode extends Node{
 	
 	public ArrayList<DeclNode> declarations;
 	

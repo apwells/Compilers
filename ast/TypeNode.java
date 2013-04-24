@@ -1,6 +1,6 @@
 package ast;
 
-public class TypeNode {
+public class TypeNode extends Node{
 	
 	protected String type;
 	
