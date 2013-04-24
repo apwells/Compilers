@@ -368,10 +368,15 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(GreatThEqNode n) {
 			
 			
-			if((typeHelp.isNum(n.term, currentScope) == false) && (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.term, currentScope) == false) && (typeHelp.isChar(n.value, currentScope) == false)){
-				
-				Error.PrintError("in GREATERTHANEQUAL expression", Error.Type.TYPE);
+			String termType = typeHelp.getType(n.term, currentScope);
+			String valueType = typeHelp.getType(n.value, currentScope);
+			
+			if (termType != valueType) {
+				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
+					if (!typeHelp.isPrimitiveNoBool(termType) && !typeHelp.isPrimitiveNoBool(valueType)) {
+						Error.PrintError("in GREATERTHANEQUAL expression!!!", Error.Type.TYPE);
+					}
+				}
 			}
 			
 			n.value.accept(this);
@@ -385,13 +390,15 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(GreatThNode n) {
 			
-			if((typeHelp.isNum(n.term, currentScope) == false)
-					|| (typeHelp.isChar(n.term, currentScope) == false)
-					|| (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.value, currentScope) == false)){
-				
-	
-				Error.PrintError("in GREATERTHAN expression", Error.Type.TYPE);
+			String termType = typeHelp.getType(n.term, currentScope);
+			String valueType = typeHelp.getType(n.value, currentScope);
+			
+			if (termType != valueType) {
+				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
+					if (!typeHelp.isPrimitiveNoBool(termType) && !typeHelp.isPrimitiveNoBool(valueType)) {
+						Error.PrintError("in GREATER expression!!!", Error.Type.TYPE);
+					}
+				}
 			}
 			n.value.accept(this);
 			System.out.print(" > ");
@@ -476,10 +483,15 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(LessThEqNode n) {
 			
-			if((typeHelp.isNum(n.term, currentScope) == false) && (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.term, currentScope) == false) && (typeHelp.isChar(n.value, currentScope) == false)){				
-	
-				Error.PrintError("in LESSTHANEQUAL expression", Error.Type.TYPE);
+			String termType = typeHelp.getType(n.term, currentScope);
+			String valueType = typeHelp.getType(n.value, currentScope);
+			
+			if (termType != valueType) {
+				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
+					if (!typeHelp.isPrimitiveNoBool(termType) && !typeHelp.isPrimitiveNoBool(valueType)) {
+						Error.PrintError("in LESSTHANEQUAL expression!!!", Error.Type.TYPE);
+					}
+				}
 			}
 			n.value.accept(this);
 			System.out.print(" <= ");
@@ -492,13 +504,15 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(LessThNode n) {
 			
-			if((typeHelp.isNum(n.term, currentScope) == false)
-					|| (typeHelp.isChar(n.term, currentScope) == false)
-					|| (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.value, currentScope) == false)){
-				
-	
-				Error.PrintError("in LESSTHAN expression", Error.Type.TYPE);
+			String termType = typeHelp.getType(n.term, currentScope);
+			String valueType = typeHelp.getType(n.value, currentScope);
+			
+			if (termType != valueType) {
+				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
+					if (!typeHelp.isPrimitiveNoBool(termType) && !typeHelp.isPrimitiveNoBool(valueType)) {
+						Error.PrintError("in LESSTHAN expression!!!", Error.Type.TYPE);
+					}
+				}
 			}
 			n.value.accept(this);
 			System.out.print(" < ");
@@ -574,11 +588,15 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(NotEqNode n) {
-			if((typeHelp.isNum(n.term, currentScope) == false) && (typeHelp.isNum(n.value, currentScope) == false)
-					|| (typeHelp.isChar(n.term, currentScope) == false) && (typeHelp.isChar(n.value, currentScope) == false)
-					|| (typeHelp.isBool(n.term, currentScope) == false) && (typeHelp.isBool(n.value, currentScope) == false)){
-	
-				Error.PrintError("in NOTEQUAL expression", Error.Type.TYPE);
+			String termType = typeHelp.getType(n.term, currentScope);
+			String valueType = typeHelp.getType(n.value, currentScope);
+			
+			if (termType != valueType) {
+				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
+					if (!typeHelp.isPrimitive(termType) && !typeHelp.isPrimitive(valueType)) {
+						Error.PrintError("in NOTEQUAL expression!!!", Error.Type.TYPE);
+					}
+				}
 			}
 			n.value.accept(this);
 			System.out.print(" != ");
