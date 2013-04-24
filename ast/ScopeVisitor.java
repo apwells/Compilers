@@ -594,7 +594,7 @@ public class ScopeVisitor implements Visitor {
 			if (termType != valueType) {
 				if (termType != "int" && termType != "float" && valueType != "int" && termType != "float") {
 					if (!typeHelp.isPrimitive(termType) && !typeHelp.isPrimitive(valueType)) {
-						Error.PrintError("in NOTEQUAL expression!!!", Error.Type.TYPE);
+						Error.PrintError("in EQUAL expression!!!", Error.Type.TYPE);
 					}
 				}
 			}
@@ -649,7 +649,10 @@ public class ScopeVisitor implements Visitor {
 			n.value.accept(this);
 			System.out.print(" + ");
 			n.term.accept(this);
-			if((typeHelp.isNum(n.term, currentScope) == false)|| typeHelp.isNum(n.value, currentScope) == false){
+			if((typeHelp.getType(n.term, currentScope) != "int")
+					|| (typeHelp.getType(n.value, currentScope) != "float"
+					|| (typeHelp.getType(n.term, currentScope) != "int")
+					|| typeHelp.getType(n.value, currentScope) != "float")){
 				Error.PrintError("in Plus expression", Error.Type.TYPE);
 			}
 			return null;
