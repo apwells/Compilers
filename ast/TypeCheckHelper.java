@@ -116,9 +116,10 @@ public class TypeCheckHelper {
 		
 		// Now if it's an accessor or function
 		try { accessor = (AccessorNode) node; 
-			VarTypeNode typeNode = (VarTypeNode) currentScope.getRecursive(accessor.getWholeName());
+			VarDeclNode typeNode = (VarDeclNode) currentScope.getRecursive(accessor.getWholeName());
+			
 			//System.out.println(" *** Type is " + typeNode.type.type + " *** ");
-		if (typeNode != null) {	return typeNode.type.type; }
+		if (typeNode != null) {	return typeNode.id.type.type; }
 		} catch (ClassCastException e) { 
 			//System.out.println (" EXCEPTION !! " + e);
 		}
@@ -157,7 +158,7 @@ public class TypeCheckHelper {
 				} else {
 					try {
 						type = getType(listItem, currentScope);	// First item of list sets the type
-						System.out.println("TCH : Checking list. First item found to be " + type);
+						//System.out.println("TCH : Checking list. First item found to be " + type);
 					} catch (Exception e) {
 						System.out.println ("Exception in checkSequence : " + e);
 					}

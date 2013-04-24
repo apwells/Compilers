@@ -128,8 +128,7 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(ConcatNode n) {
 			
-			
-			System.out.println("**************CONCAT :: VAlue = " +  n.value.toString() + " Term = "+ n.term.toString());
+			//System.out.println("**************CONCAT :: VAlue = " +  n.value.toString() + " Term = "+ n.term.toString());
 			n.value.accept(this);
 			System.out.print("::");
 			
@@ -153,33 +152,39 @@ public class ScopeVisitor implements Visitor {
 			String list1Type = "";
 			String list2Type = "";
 			
-//			if (typeHelp.getType(n.value, currentScope) == "list") {
-//				if (typeHelp.isAccessor(n.value, currentScope)) {
-//					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
-//					AccessorNode access = (AccessorNode) n.value;
-//					System.out.print("TYPE OF VALU = " + currentScope.getRecursive(access.getWholeName()).toString());
-//					SequenceNode seq = (SequenceNode) currentScope.getRecursive(access.getWholeName());
-//					// if return of checkSequence is EQUAL to BAD LIST, then we complain
-//					list1Type = typeHelp.checkSequence(seq, currentScope);
-//				}
-//			}
-//			
-			
 			if (typeHelp.getType(n.term, currentScope) == "list") {
+				
+				if (typeHelp.isAccessor(n.value, currentScope)) {
+					//System.out.println("8888888888888888");
+					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
+					AccessorNode access = (AccessorNode) n.value;
+					VarDeclNode varDecl = (VarDeclNode) currentScope.getRecursive(access.getWholeName());
+					SequenceNode seq = (SequenceNode) varDecl.declarations.expressions.get(0);
+					//System.out.println("------- ----- --- seq is "+seq.toString());
+					// Store list type
+					list1Type = typeHelp.checkSequence(seq, currentScope);
+				}
+			}
+			//System.out.println(" --- ---- -- - - TYPE IS  " + typeHelp.getType(n.term, currentScope));
+			//System.out.println(n.term.toString());
+			if (typeHelp.getType(n.term, currentScope) == "list") {
+				
 				if (typeHelp.isAccessor(n.term, currentScope)) {
 					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
 					AccessorNode access = (AccessorNode) n.term;
 					VarDeclNode varDecl = (VarDeclNode) currentScope.getRecursive(access.getWholeName());
 					SequenceNode seq = (SequenceNode) varDecl.declarations.expressions.get(0);
-					System.out.println("------- ----- --- seq is "+seq.toString());
-					// if return of checkSequence is EQUAL to BAD LIST, then we complain
+					//System.out.println("------- ----- --- seq is "+seq.toString());
+					// Store list type
 					list2Type = typeHelp.checkSequence(seq, currentScope);
 				}
 			}
-			System.out.println("List 1 type is "+list1Type);
-			System.out.println("List 2 type is "+list2Type);
 			
-
+			if (list1Type != list2Type) {
+				Error.PrintError("You must concat 2 lists of the same type! on line " , Error.Type.TYPE);
+			} else {
+				// System.out.println("LISTS ARE THE SAME TYPE! CONCAT!");
+			}
 			
 			// TODO Auto-generated method stub
 			return null;
@@ -295,7 +300,8 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(ExprListNode n) {
-			for(ExprNode a : n.expressions){System.out.println("ssssize!"+n.expressions.size());
+			for(ExprNode a : n.expressions){
+				//System.out.println("ssssize!"+n.expressions.size());
 				a.accept(this);
 			}
 			// TODO Auto-generated method stub
@@ -844,13 +850,13 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(VarDeclNode n) {
 
 			
-			System.out.println("VARIABLE DECLARATION\n\n");
+			//System.out.println("VARIABLE DECLARATION\n\n");
 			
 			if (currentScope.get(n.id.id) != null) {
 				Error.PrintError(n.id.id, Error.Type.DECLARED);
 				n.id.accept(this);
 			} else {
-				System.out.println("Saving new variable " + n.id.id + " to current scope in symbol table as " + n.toString());
+				//System.out.println("Saving new variable " + n.id.id + " to current scope in symbol table as " + n.toString());
 				currentScope.put(n.id.id, n);
 				
 			}

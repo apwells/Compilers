@@ -1,5 +1,7 @@
 package errors;
 
+import ast.Node;
+
 public class Error {
 	
 	public enum Type{
