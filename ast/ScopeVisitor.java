@@ -37,14 +37,22 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(AssignNode n) {
 			n.value.accept(this);
-			if (typeHelp.isInt(n.value, currentScope)) {
-				System.out.print("FOUND INT");
+//			if (typeHelp.isInt(n.value, currentScope)) {
+//				System.out.print("FOUND INT");
+//			}
+//			System.out.print("=");
+//			n.var.accept(this);
+//			if (typeHelp.isInt(n.var, currentScope)) {
+//				System.out.print("FOUND INT");
+//			}
+			if (currentScope.getRecursive(n.var.getWholeName()) != null) {
+				// Found it in symbol table
+				System.out.println("Var for assignment was found");
+			} else {
+				Error.PrintError("Assignment error : ", Error.Type.NOTDECLARED);
 			}
-			System.out.print("=");
-			n.var.accept(this);
-			if (typeHelp.isInt(n.var, currentScope)) {
-				System.out.print("FOUND INT");
-			}
+			
+			
 			System.out.println(";");
 
 			// TODO Auto-generated method stub
@@ -142,14 +150,35 @@ public class ScopeVisitor implements Visitor {
 				Error.PrintError("in VALUE of CONCAT expression", Error.Type.TYPE);
 			}
 			
+			String list1Type = "";
+			String list2Type = "";
 			
+//			if (typeHelp.getType(n.value, currentScope) == "list") {
+//				if (typeHelp.isAccessor(n.value, currentScope)) {
+//					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
+//					AccessorNode access = (AccessorNode) n.value;
+//					System.out.print("TYPE OF VALU = " + currentScope.getRecursive(access.getWholeName()).toString());
+//					SequenceNode seq = (SequenceNode) currentScope.getRecursive(access.getWholeName());
+//					// if return of checkSequence is EQUAL to BAD LIST, then we complain
+//					list1Type = typeHelp.checkSequence(seq, currentScope);
+//				}
+//			}
+//			
 			
-			if(typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "bool" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "bool"
-					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "int" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "int"
-					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "float" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "float"
-					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "char" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "char"){
-				Error.PrintError(" - Invalid Input in CONCAT", Error.Type.TYPE);
+			if (typeHelp.getType(n.term, currentScope) == "list") {
+				if (typeHelp.isAccessor(n.term, currentScope)) {
+					// Its an accessor. Look it up, get its sequenceNode, then run checkSequence on it.
+					AccessorNode access = (AccessorNode) n.term;
+					VarDeclNode varDecl = (VarDeclNode) currentScope.getRecursive(access.getWholeName());
+					SequenceNode seq = (SequenceNode) varDecl.declarations.expressions.get(0);
+					System.out.println("------- ----- --- seq is "+seq.toString());
+					// if return of checkSequence is EQUAL to BAD LIST, then we complain
+					list2Type = typeHelp.checkSequence(seq, currentScope);
+				}
 			}
+			System.out.println("List 1 type is "+list1Type);
+			System.out.println("List 2 type is "+list2Type);
+			
 
 			
 			// TODO Auto-generated method stub
@@ -813,9 +842,22 @@ public class ScopeVisitor implements Visitor {
 	    
 		@Override
 		public Object visit(VarDeclNode n) {
+
+			
+			System.out.println("VARIABLE DECLARATION\n\n");
+			
+			if (currentScope.get(n.id.id) != null) {
+				Error.PrintError(n.id.id, Error.Type.DECLARED);
+				n.id.accept(this);
+			} else {
+				System.out.println("Saving new variable " + n.id.id + " to current scope in symbol table as " + n.toString());
+				currentScope.put(n.id.id, n);
+				
+			}
+			
 			n.id.accept(this);
 			System.out.print(" = ");
-			//n.declarations.accept(this);
+			n.declarations.accept(this);
 			
 			// TODO Auto-generated method stub
 			return null;
@@ -858,19 +900,9 @@ public class ScopeVisitor implements Visitor {
 
 		@Override
 		public Object visit(VarTypeNode n) {
-			//System.out.print(n.id);
-			//System.out.print(" : ");
-			System.out.println("Checking variable scope for "+ n.id);
-			if (currentScope.get(n.id) != null) {
-				Error.PrintError(n.id, Error.Type.DECLARED);
-				n.type.accept(this);
-			} else {
-				System.out.println("Saving new variable " + n.id + " to current scope in symbol table");
-				currentScope.put(n.id, n);
-				//n.type.accept(this);
-			}
-			
-			
+			System.out.print(n.id);
+			System.out.print(" : ");
+			n.type.accept(this);
 			// TODO Auto-generated method stub
 			return null;
 		}

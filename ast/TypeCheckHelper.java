@@ -58,6 +58,20 @@ public class TypeCheckHelper {
 		return false;
 	}
 	
+	/*
+	 *   function returns accessor if node is an accessor
+	 */
+	
+	public boolean isAccessor (Node node, SymbolTable currentScope) {
+		AccessorNode accessor = null;
+		try { accessor = (AccessorNode) node; 
+		if (accessor != null) {
+			return true;
+		}
+		} catch (Exception e) {}
+		return false;
+	}
+	
 	public boolean isString(Node node, SymbolTable currentScope) {
 		
 		try {
