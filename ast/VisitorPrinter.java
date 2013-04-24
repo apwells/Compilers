@@ -5,9 +5,12 @@ public class VisitorPrinter implements Visitor{
     
 	@Override
 	public Object visit(AccessorNode n) {
-		for (String id : n.ids) {
-			System.out.print(id);
-		}
+		for (int i=0;i<n.ids.size();i++)
+        {       if(i>0)
+            System.out.print("."+n.ids.get(i));
+    else
+        System.out.print(n.ids.get(i));
+        }
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -81,7 +84,6 @@ public class VisitorPrinter implements Visitor{
 		System.out.print("::");
 		
 		n.term.accept(this);
-		System.out.println(";");
 
 		// TODO Auto-generated method stub
 		return null;
@@ -227,7 +229,7 @@ public class VisitorPrinter implements Visitor{
 	@Override
 	public Object visit(FuncCallStmtNode n) {
 		n.function.accept(this);
-		System.out.print(";");
+		System.out.println(";");
 
 		// TODO Auto-generated method stub
 		return null;

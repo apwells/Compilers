@@ -16,4 +16,5 @@ tdef family : mother:person, father:person, children:list; // family definition
 
   f: family = m,p,[c1,c2];
   f.children = f.children :: [c3];
+  sum(3);
 }
