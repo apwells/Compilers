@@ -168,7 +168,6 @@ public class VisitorPrinter implements Visitor{
 	@Override
 	public Object visit(ExprListNode n) {
 		for(ExprNode a : n.expressions){
-			//System.out.println("ExprNode for loop : " + a.toString());
 			a.accept(this);
             if(!a.equals(n.expressions.get(n.expressions.size()-1)))
 			System.out.print(", ");
@@ -298,7 +297,7 @@ public class VisitorPrinter implements Visitor{
     
 	@Override
 	public Object visit(IntNode n) {
-		System.out.print(n.value+"at line and col"+n.line+"|"+n.column);
+		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
 	}
