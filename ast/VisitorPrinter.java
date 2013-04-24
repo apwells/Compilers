@@ -63,7 +63,7 @@ public class VisitorPrinter implements Visitor{
     
 	@Override
 	public Object visit(BoolNode n) {
-		//n.accept(this);
+		
 		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
@@ -71,7 +71,7 @@ public class VisitorPrinter implements Visitor{
     
 	@Override
 	public Object visit(CharNode n) {
-		//n.accept(this);
+		
 		System.out.print(n.value);
 		// TODO Auto-generated method stub
 		return null;
@@ -415,7 +415,7 @@ public class VisitorPrinter implements Visitor{
 		{
 			a.accept(this);
 			if (i < n.params.size()) {
-				System.out.print(", "); // Should these always be comma seperated? This should not affect last item
+				System.out.print(", ");
 			}
 			i++;
 		}
