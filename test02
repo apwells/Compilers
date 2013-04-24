@@ -6,7 +6,6 @@ s2:string = "hello";
 
 {
 
-  
   newlist : list = l1 :: l2;
   anotherlist : list = [s1] :: [s2] :: newlist;
   thirdlist : list = l2[:-2] :: l2[3:];
@@ -15,7 +14,7 @@ s2:string = "hello";
 
 
   if (len(newlist) <= len(anotherlist)) {
-     newlist = newlist[0] + anotherlist[0];
+     newlist = newlist + anotherlist[0];
   } else {
      newlist = newlist - newlist[0];
   }
