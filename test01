@@ -9,12 +9,15 @@ fdef sum2(i:float, j:float) : float {
 
 {
 
+  mything :int = 5;
   s1 : int = sum(-10,20) + 5;
+  b2 : bool = true;
   s2 : float = sum2(10.0,-20.0);
-  b : bool;
+  b : float;
+  g : bool;
 
-  if (s1 < s2 || s1 == s2) {
-     b  =  s1 + s2 / (s1 + s2) >= 30;
+  if (s1 < s2 || b2 == s2) {
+     b  =  1 + b + 3 ;
   } else {
      /* do something else */
   }

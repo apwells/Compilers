@@ -6,11 +6,22 @@ public class TypeCheckHelper {
 	
 	public boolean isBool(Node node, SymbolTable currentScope) throws ClassCastException {
 		
+		String className = node.getClass().getSimpleName();
+		System.out.println("isBool queried. className is " + className);
+		
 		try {
 			if (getType(node, currentScope) == "bool") {
 				return true;
 			}
 		} catch (Exception e) {}
+		
+		if (className.equalsIgnoreCase("GreatThEqualNode") || className.equalsIgnoreCase("LessThNode") || className.equalsIgnoreCase("OrNode")
+				|| className.equalsIgnoreCase("InNode") || className.equalsIgnoreCase("EqNode") || className.equalsIgnoreCase("NotEqNode") 
+				|| className.equalsIgnoreCase("LessThEqNode") || className.equalsIgnoreCase("GreaterThEqNode") 
+				|| className.equalsIgnoreCase("AndNode")) {
+			return true;
+		}
+		
 		return false;
 		
 	}
@@ -35,7 +46,13 @@ public class TypeCheckHelper {
 	}
 	
 	public boolean isNum(Node node, SymbolTable currentScope) {
+		String className = node.getClass().getSimpleName();
+		
 		if (getType(node, currentScope) == "int" ||  getType(node, currentScope) == "float"){
+			return true;
+		}
+		if (className.equalsIgnoreCase("PlusNode") || className.equalsIgnoreCase("MinusNode")
+				|| className.equalsIgnoreCase("DivideNode") || className.equalsIgnoreCase("MultiplyNode") || className.equalsIgnoreCase("PowerTermNode")) {
 			return true;
 		}
 		return false;

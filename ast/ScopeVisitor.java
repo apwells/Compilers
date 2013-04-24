@@ -121,7 +121,7 @@ public class ScopeVisitor implements Visitor {
 		public Object visit(ConcatNode n) {
 			
 			
-			
+			System.out.println("**************CONCAT :: VAlue = " +  n.value.toString() + " Term = "+ n.term.toString());
 			n.value.accept(this);
 			System.out.print("::");
 			
@@ -142,10 +142,12 @@ public class ScopeVisitor implements Visitor {
 				Error.PrintError("in VALUE of CONCAT expression", Error.Type.TYPE);
 			}
 			
+			
+			
 			if(typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "bool" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "bool"
 					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "int" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "int"
-					||typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "float" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "float"
-					||typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "char" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "char"){
+					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "float" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "float"
+					|| typeHelp.checkSequence((SequenceNode) n.term, currentScope) == "char" && typeHelp.checkSequence((SequenceNode) n.value, currentScope) != "char"){
 				Error.PrintError(" - Invalid Input in CONCAT", Error.Type.TYPE);
 			}
 
@@ -558,15 +560,16 @@ public class ScopeVisitor implements Visitor {
 		@Override
 		public Object visit(NoColNode n) {
 			n.value1.accept(this);
-			System.out.print("(");
+			System.out.print("[");
 			n.value2.accept(this);
-			System.out.print(")");
+			System.out.print("]");
 			
 			if(typeHelp.getType(n.value1, currentScope) != "string" 
 					&& typeHelp.getType(n.value1, currentScope) != "tuple"
 					&& typeHelp.getType(n.value1, currentScope) != "list"
 					){
 				Error.PrintError("in VALUE1 of NOCOL expression", Error.Type.TYPE);
+				System.out.println("** "+n.value1.toString());
 			}
 			if(typeHelp.getType(n.value2, currentScope) != "int") {
 				Error.PrintError("in VALUE2 of NOCOL expression", Error.Type.TYPE);
@@ -625,6 +628,7 @@ public class ScopeVisitor implements Visitor {
 			n.value.accept(this);
 			System.out.print(" || ");
 			n.term.accept(this);
+			System.out.println("term is " + n.term.toString() + " and val is " + n.value.toString());
 			if((typeHelp.isBool(n.term, currentScope) == false)|| typeHelp.isBool(n.value, currentScope) == false){
 				Error.PrintError("in OR expression", Error.Type.TYPE);
 			}
@@ -655,6 +659,17 @@ public class ScopeVisitor implements Visitor {
 					|| typeHelp.getType(n.value, currentScope) != "float")){
 				Error.PrintError("in Plus expression", Error.Type.TYPE);
 			}
+			
+//			if (!typeHelp.isNum(n.term, currentScope)) {
+//				System.out.println("Term is NaN");
+//				System.out.println(n.term.toString());
+//			}
+//			
+//			if (!typeHelp.isNum(n.value, currentScope)) {
+//				System.out.println("value is NaN");
+//				System.out.println(n.value.toString());
+//			}
+			
 			return null;
 		}
 	    
